@@ -36,8 +36,9 @@ export default {
   methods: {
     login: function (user) {
       let _this = this
-      this.$axios.post('/api/getSites', this.$qs.stringify({
-        userId: '111'
+      this.$axios.post('/api/login', this.$qs.stringify({
+        loginName: user.userName,
+        loginPwd: user.passWord
       })).then(function (response) {
         // if (response.data.status === '200') {
         //   _this.$message({
