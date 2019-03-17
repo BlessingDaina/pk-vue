@@ -6,7 +6,7 @@ import parkingHome from '@/views/layout/parking/parkingHome'
 import personalManagement from '@/views/layout/components/personalManagement'
 import channelManagement from '@/views/layout/components/channelManagement'
 import monthlyCar from '@/views/layout/parking/monthlycar'
-import parkinfo from '@/views/layout/parking/parkinfo'
+import parkInfo from '@/views/layout/parking/park-info'
 Vue.use(Router)
 
 const router = new Router({
@@ -20,9 +20,9 @@ const router = new Router({
       },
       children: [
         {
-          path: 'parking/parkinfo.php',
-          name: 'parkinfo',
-          component: parkinfo
+          path: 'parking/park-info',
+          name: 'park-info',
+          component: parkInfo
         }, {
           path: 'parking/personal_management.php',
           name: 'personalManagement',

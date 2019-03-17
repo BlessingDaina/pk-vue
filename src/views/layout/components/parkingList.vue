@@ -29,7 +29,7 @@
           background
           layout="prev, pager, next"
           :total=totalPage
-          :current-page=currentPage
+          :current-page=pageNum
           @current-change="handleCurrentChange"
           :page-size=pageSize
         >
@@ -47,9 +47,9 @@ export default {
       parkingLotName: '',
       selectedParkId: '',
       parkingList: [],
-      pageSize: 10,
+      pageSize: 1,
       totalPage: 0,
-      currentPage: 1
+      pageNum: 1
     }
   },
   created () {
@@ -57,11 +57,11 @@ export default {
   },
   methods: {
     handleCurrentChange (val) {
-      this.currentPage = val
+      this.pageNum = val
       this.getParkingList()
     },
     searchParkLot () {
-      this.currentPage = 1
+      this.pageNum = 1
       this.getParkingList()
     },
     selectParkLot (park) {
@@ -69,23 +69,16 @@ export default {
       this.$emit('getSelectedParkLotId', this.selectedParkId)
     },
     getParkingList () {
-      let _this = this
       let pageSize = this.pageSize
-      let currentPage = this.currentPage
+      let pageNum = this.pageNum
       let parkingLotName = this.parkingLotName
-      this.$axios.post('/api/pklot/listParkinglot', {
-        currentPage: currentPage,
+      this.$axios.post('/api/pklot/getParkingLotList', {
+        pageNum: pageNum,
         pageSize: pageSize,
         parkingLotName: parkingLotName
-      }).then(function (res) {
-        if (res) {
-          _this.parkingList = res.data.data
-          _this.totalPage = res.data.rowCount
-          _this.selectedParkId = _this.parkingList[0].parkingLotId
-          _this.selectParkLot(_this.parkingList[0])
-        }
-      }).catch(function () {
-        console.log('error')
+      }).then(response => {
+        this.totalPage = response.data.data.count
+        this.parkingList = response.data.data.items
       })
     }
   }

@@ -34,36 +34,31 @@ export default {
     }
   },
   methods: {
-    login: function (user) {
+    login (user) {
       let _this = this
-      this.$axios.post('/api/login', this.$qs.stringify({
+      this.$axios.post('/api/sys/login', this.$qs.stringify({
         loginName: user.userName,
         loginPwd: user.passWord
       })).then(function (response) {
-        // if (response.data.status === '200') {
-        //   _this.$message({
-        //     message: response.data.message,
-        //     type: 'success'
-        //   })
-        //   console.log(response.data)
-        //   _this.userToken = response.data.data.token
-        //   _this.uid = response.data.data.uid
-        //   // 将用户token保存到vuex中
-        //   _this.$store.commit('changeLogin', {
-        //     token: _this.userToken,
-        //     uid: _this.uid
-        //   })
-        //   _this.$router.push({name: 'index'})
-        // } else if (response.data.status === '400') {
-        //   _this.$message.error('参数错误')
-        // } else if (response.data.status === '401') {
-        //   _this.$message.error('权限不够')
-        // } else if (response.data.status === '404') {
-        //   _this.$message.error('用户名或密码错误')
-        // } else {
-        //   _this.$message.error('服务器异常')
-        // }
-        console.log(response)
+        if (response.data.status === 200) {
+          _this.$message({
+            message: response.data.message,
+            type: 'success'
+          })
+          console.log(response.data)
+          _this.userToken = response.data.data.token
+          _this.userId = response.data.data.userId
+          // 将用户token保存到vuex中
+          _this.$store.commit('changeLogin', {
+            token: _this.userToken,
+            userId: _this.userId
+          })
+          _this.$router.push({name: 'index'})
+        } else if (response.data.status === 500) {
+          _this.$message.error('用户名或密码错误')
+        } else {
+          _this.$message.error('服务器异常')
+        }
       }).catch(function (res) {
         _this.$message.error('错误')
         console.log(res)

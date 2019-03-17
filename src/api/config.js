@@ -2,7 +2,7 @@ import axios from 'axios'
 
 // 配置api地址
 
-const baseUrl = 'http://localhost:8080'
+const baseUrl = 'http://localhost:8085'
 
 // axios设置key都是默认的不允许改动的
 const $ajax = axios.create({

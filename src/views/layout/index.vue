@@ -4,12 +4,12 @@
       <el-menu
         :default-active="$route.path" @open="handleOpen" @close="handleClose"
         background-color="#304156" text-color="#fff" active-text-color="#ffd04b" router>
-        <el-submenu v-for="(menu, index) in menuTree" :key="index" :index="menu.icon">
-          <template slot="title"><i class="el-icon-star-on"></i> {{menu.menuName}}</template>
+        <el-submenu v-for="menu in menus" :key="menu.menuId" :index="menu.icon">
+          <template slot="title"><i class="iconfont" :class="menu.icon"></i> {{menu.menuName}}</template>
           <el-menu @open="handleOpen" @close="handleClose"
                    background-color="#1f2d3d" text-color="#fff" active-text-color="#ffd04b" router>
-            <el-menu-item v-for="(menuChild, index) in menu.children" :key="index" :index="'/'+menuChild.href">
-              <i class="el-icon-star-on"></i> {{menuChild.menuName}}
+            <el-menu-item v-for="menuChild in menu.menus" :key="menuChild.menuId" :index="'/'+menuChild.href">
+              <i class="iconfont" :class="menuChild.icon"></i> {{menuChild.menuName}}
             </el-menu-item>
           </el-menu>
         </el-submenu>
@@ -21,10 +21,10 @@
         <div class="authorizedMenu">
           <div class="menu-list">
             <el-dropdown>
-              <span class="el-dropdown-link menuFirst"><i class="el-icon-location-outline"></i>{{selectedMenuName}}<i
+              <span class="el-dropdown-link menuFirst"><i class="el-icon-location-outline"></i>{{selectedSiteName}}<i
                 class="el-icon-arrow-down el-icon--right"></i></span>
               <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item v-for="item in AuthorizedSite" :key="item.sid" @click.native="handleSelect(item)">
+                <el-dropdown-item v-for="item in sites" :key="item.siteId" @click.native="handleSelect(item)">
                   {{item.siteName}}
                 </el-dropdown-item>
               </el-dropdown-menu>
@@ -68,12 +68,10 @@ export default {
   },
   data () {
     return {
-      AuthorizedSite: [],
-      allMenu: [],
-      AuthorizedMenuType0: [],
-      AuthorizedMenuType1: [],
+      sites: [],
+      selectedSiteName: '',
+      menus: [],
       value: '',
-      selectedMenuName: '',
       index: '',
       thisAsideMenu: [],
       thisMenuList: [],
@@ -95,37 +93,31 @@ export default {
     },
     handleClose (key, keyPath) {
     },
-    handleSelect (selectedMenu) {
+    handleSelect (selectedSite) {
       let _this = this
-      _this.selectedMenuName = selectedMenu.siteName
-      _this.AuthorizedMenuType0 = []
-      _this.AuthorizedMenuType1 = []
-      _this.getAllMenu(selectedMenu.sid)
+      _this.selectedSiteName = selectedSite.siteName
+      _this.getMenu(selectedSite.siteId)
     },
     getAllSite () {
       let _this = this
-      _this.$axios.post('/api/sct/listAuthorizedSite').then(function (res) {
-        if (res) {
-          _this.AuthorizedSite = res.data.data
-          _this.value = _this.AuthorizedSite[0].sid
-          _this.selectedMenuName = _this.AuthorizedSite[0].siteName
-          _this.getAllMenu(_this.value)
-        }
-      }).catch(function () {
-        console.log('error')
+      _this.$axios.post('/api/sys/getSites').then(response => {
+        _this.sites = response.data.data
+        _this.selectedSiteName = response.data.data[0].siteName
+        _this.handleSelect(response.data.data[0])
+        console.log(_this.sites)
+      }).catch(error => {
+        console.log(error)
       })
     },
-    getAllMenu (sid) {
+    getMenu (siteId) {
       let _this = this
-      _this.$axios.post('/api/sct/listAuthorizedMenu', {
-        sid: sid
-      }).then(function (res) {
-        if (res) {
-          _this.allMenu = res.data.data
-          _this.getMenuType(_this.allMenu)
-        }
-      }).catch(function () {
-        console.log('error')
+      _this.$axios.post('/api/sys/getMenus', {
+        siteId: siteId
+      }).then(response => {
+        console.log(response)
+        _this.menus = response.data.data
+      }).catch(error => {
+        console.log(error)
       })
     },
     getMenuType (allMenu) {
@@ -171,6 +163,18 @@ export default {
 }
 </script>
 <style scoped lang="scss">
+  /deep/ {
+    .el-dropdown {
+      float: left;
+      margin-left: 30px;
+    }
+    .el-submenu__title i {
+      color: #ffffff;
+    }
+    .el-menu-item i {
+      color: #ffffff;
+    }
+  }
   ::-webkit-scrollbar {
     display: none
   }

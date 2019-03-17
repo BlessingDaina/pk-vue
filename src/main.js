@@ -10,6 +10,7 @@ import './styles/common.css'
 import axios from './axios'
 import store from './store/index'
 import echarts from 'echarts'
+import './assets/iconfont/iconfont.css'
 
 Vue.prototype.$echatts = echarts
 Vue.config.productionTip = false
