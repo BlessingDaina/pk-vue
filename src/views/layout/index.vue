@@ -32,11 +32,6 @@
           </div>
         </div>
         <div class="navBarRight">
-          <!--<ul mode="horizontal">-->
-            <!--<li>ddd</li>-->
-            <!--<li>ddd</li>-->
-            <!--<li>ddd</li>-->
-          <!--</ul>-->
           <el-menu mode="horizontal" active-text-color="#232650"  text-color="#232650" router>
             <el-menu-item index="/parking/parkingHome.php">Home</el-menu-item>
             <el-menu-item index="/message"><i class="el-icon-message" style="color: #232650"></i> </el-menu-item>
@@ -57,12 +52,7 @@
   </el-container>
 </template>
 <script>
-// import {login, forgetpasswoed} from '../router'
-import navBar from './components/navBar'
 export default {
-  components: {
-    navBar
-  },
   created () {
     this.getAllSite()
   },
@@ -80,14 +70,6 @@ export default {
   },
   methods: {
     logout () {
-      console.log(111)
-      let _this = this
-      _this.$axios.post('/api/sct/webLogout').then(function (response) {
-        if (response.data.status === '200') {
-          sessionStorage.setItem('token', '')
-          console.log(111)
-        }
-      })
     },
     handleOpen (key, keyPath) {
     },
@@ -119,45 +101,6 @@ export default {
       }).catch(error => {
         console.log(error)
       })
-    },
-    getMenuType (allMenu) {
-      let _this = this
-      allMenu.forEach(function (item) {
-        if (item.menuType === 0) {
-          _this.AuthorizedMenuType0.push(item)
-        } else {
-          _this.AuthorizedMenuType1.push(item)
-        }
-      })
-      _this.matchMenu()
-    },
-    matchMenu () {
-      let _this = this
-      let menu = []
-      let munuChildren = []
-      _this.AuthorizedMenuType0.forEach(function (menuTitle, index) {
-        let menuFather = {
-          href: '',
-          icon: '',
-          menuCode: '',
-          menuName: '',
-          children: []
-        }
-        menuFather.href = menuTitle.href
-        menuFather.icon = menuTitle.icon
-        menuFather.menuCode = menuTitle.menuCode
-        menuFather.menuName = menuTitle.menuName
-        _this.AuthorizedMenuType1.forEach(function (menuList) {
-          let menuCode = menuList.menuCode.substring(0, 4)
-          if (menuTitle.menuCode === menuCode) {
-            munuChildren.push(menuList)
-          }
-        })
-        menuFather.children = munuChildren
-        menu.push(menuFather)
-        munuChildren = []
-      })
-      _this.menuTree = menu
     }
   }
 }

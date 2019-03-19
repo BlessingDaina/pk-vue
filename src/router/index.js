@@ -3,10 +3,8 @@ import Router from 'vue-router'
 import index from '@/views/layout/index'
 import login from '@/views/login'
 import parkingHome from '@/views/layout/parking/parkingHome'
-import personalManagement from '@/views/layout/components/personalManagement'
-import channelManagement from '@/views/layout/components/channelManagement'
-import monthlyCar from '@/views/layout/parking/monthlycar'
 import parkInfo from '@/views/layout/parking/park-info'
+import personalManagement from '@/views/layout/parking/personal-management'
 Vue.use(Router)
 
 const router = new Router({
@@ -23,22 +21,15 @@ const router = new Router({
           path: 'parking/park-info',
           name: 'park-info',
           component: parkInfo
-        }, {
-          path: 'parking/personal_management.php',
-          name: 'personalManagement',
+        },
+        {
+          path: 'parking/personal-management',
+          name: 'personal-management',
           component: personalManagement
-        }, {
-          path: 'parking/channel_management.php',
-          name: 'channelManagement',
-          component: channelManagement
         }, {
           path: 'parking/parkingHome.php',
           name: 'parkingHome',
           component: parkingHome
-        }, {
-          path: 'parking/monthlycar.php',
-          name: 'monthlyCar',
-          component: monthlyCar
         }
       ]
     },

@@ -1,9 +1,9 @@
 .el-dialog {
-  max-height: 80%;
-  min-width: 700px;
   display: flex;
   flex-direction: column;
 }
 .el-dialog__body {
   overflow: auto;
+  padding-top: 10px;
+  padding-bottom: 0;
 }
