@@ -46,7 +46,9 @@
       </el-header>
       <!--<navBar/>-->
       <el-main>
-        <router-view></router-view>
+        <div class="content">
+          <router-view></router-view>
+        </div>
       </el-main>
     </el-container>
   </el-container>
@@ -208,6 +210,9 @@ export default {
     overflow-x: hidden;
     overflow-y: auto;
     padding: 0;
+    .content {
+      margin: 10px;
+    }
   }
 
   body > .el-container {

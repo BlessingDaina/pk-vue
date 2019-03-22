@@ -6,7 +6,7 @@
       <el-input type="text" v-model="user.userName" auto-complete="off" placeholder="账号"></el-input>
     </el-form-item>
     <el-form-item prop="passWord">
-      <el-input type="password" v-model="user.passWord" auto-complete="off" placeholder="密码"></el-input>
+      <el-input type="password" v-model="user.passWord" auto-complete="off" placeholder="密码" @keyup.enter.native="login(user)"></el-input>
     </el-form-item>
     <el-checkbox checked class="remember">记住密码</el-checkbox>
     <el-form-item style="width:100%;">
