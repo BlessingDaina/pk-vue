@@ -7,6 +7,8 @@ import parkInfo from '@/views/layout/parking/park-info'
 import personalManagement from '@/views/layout/parking/personal-management'
 import carType from '@/views/layout/parking/car-type'
 import channelManagement from '@/views/layout/parking/channel-management'
+import freeCar from '@/views/layout/parking/free-car'
+import blackCar from '@/views/layout/parking/black-car'
 Vue.use(Router)
 
 const router = new Router({
@@ -31,6 +33,14 @@ const router = new Router({
           path: 'parking/channel-management',
           name: 'channel-management',
           component: channelManagement
+        }, {
+          path: 'parking/free-car',
+          name: 'free-car',
+          component: freeCar
+        }, {
+          path: 'parking/black-car',
+          name: 'blace-car',
+          component: blackCar
         }, {
           path: 'parking/car-type',
           name: 'car-type',

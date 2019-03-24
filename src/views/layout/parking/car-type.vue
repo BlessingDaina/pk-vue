@@ -106,6 +106,7 @@ export default {
   name: 'car-type',
   data () {
     return {
+      parkingLotId: '',
       monthlyTypeList: [],
       freeTypeList: [],
       freePutTypeList: [],
