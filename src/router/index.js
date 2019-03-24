@@ -9,6 +9,11 @@ import carType from '@/views/layout/parking/car-type'
 import channelManagement from '@/views/layout/parking/channel-management'
 import freeCar from '@/views/layout/parking/free-car'
 import blackCar from '@/views/layout/parking/black-car'
+import monthlyCar from '@/views/layout/parking/monthly-car'
+import parkingRecord from '@/views/layout/parking/parking-record'
+import fallibleLicense from '@/views/layout/parking/fallible-license'
+import temporaryCar from '@/views/layout/parking/temporary-car'
+import monthlyRules from '@/views/layout/parking/monthly-rules'
 Vue.use(Router)
 
 const router = new Router({
@@ -34,6 +39,10 @@ const router = new Router({
           name: 'channel-management',
           component: channelManagement
         }, {
+          path: 'parking/monthly-car',
+          name: 'monthly-car',
+          component: monthlyCar
+        }, {
           path: 'parking/free-car',
           name: 'free-car',
           component: freeCar
@@ -42,9 +51,25 @@ const router = new Router({
           name: 'blace-car',
           component: blackCar
         }, {
+          path: 'parking/parking-record',
+          name: 'parking-record',
+          component: parkingRecord
+        }, {
           path: 'parking/car-type',
           name: 'car-type',
           component: carType
+        }, {
+          path: 'parking/fallible-license',
+          name: 'fallible-license',
+          component: fallibleLicense
+        }, {
+          path: 'parking/temporary-car',
+          name: 'temporary-car',
+          component: temporaryCar
+        }, {
+          path: 'parking/monthly-rules',
+          name: 'monthly-rules',
+          component: monthlyRules
         }, {
           path: 'parking/parkingHome.php',
           name: 'parkingHome',

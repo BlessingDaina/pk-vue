@@ -252,7 +252,7 @@ export default {
     // 从停车场列表组件获取当前选中的停车场id
     getParkLotIdFromList (data) {
       this.parkingLotId = data
-      this.getFreeList()
+      this.getBlackCarList()
     },
     // 获取黑名车辆
     getBlackCarList () {
