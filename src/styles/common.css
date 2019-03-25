@@ -1,9 +1,0 @@
-.el-dialog {
-  display: flex;
-  flex-direction: column;
-}
-.el-dialog__body {
-  overflow: auto;
-  padding-top: 10px;
-  padding-bottom: 0;
-}

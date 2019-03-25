@@ -1,0 +1,90 @@
+/*************** table表格样式 ****************/
+.el-table th{
+  padding: 8px 0;
+}
+.el-table td{
+  padding: 6px 0;
+}
+// 滚动条样式
+.el-table__body-wrapper::-webkit-scrollbar {/*滚动条整体样式*/
+  // width: 4px;     /*高宽分别对应横竖滚动条的尺寸*/
+  // height: 4px;
+}
+.el-table__body-wrapper::-webkit-scrollbar-thumb {/*滚动条里面小方块*/
+  border-radius: 0;
+  // -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+  background: rgba(0,0,0,0.1);
+}
+.el-table__body-wrapper::-webkit-scrollbar-track {/*滚动条里面轨道*/
+  // -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+  border-radius: 0;
+  background: rgba(0,0,0,0.1);
+}
+// firefox v63以上支持
+.el-table__body-wrapper{
+  // scrollbar-width: thin;
+  // scrollbar-color: rgba(0,0,0,0.1) #c5c5c5;
+}
+.el-table{
+  &.el-table--border, &.el-table--group{
+    border: 1px solid #e4e4e4;
+    border-right: none;
+    border-bottom: none;
+  }
+  // table头部背景和边框线
+  .el-table__header-wrapper{
+    thead{
+      color: #606266;
+      tr{
+        th{
+          background-color: #f3f3f3  !important;
+          border-right: 1px solid #dbdbdb;
+          border-bottom: 1px solid #e4e4e4;
+        }
+      }
+    }
+  }
+  // table内容区域边框线样式
+  .el-table__body-wrapper{
+    td{
+      border-right: 1px solid #e4e4e4;
+      border-bottom: 1px solid #e4e4e4;
+    }
+  }
+  // table fixed部分 背景色和边框
+  .el-table__fixed-header-wrapper{
+    th{
+      background-color: #f3f3f3 !important;
+      border-right: 1px solid #dbdbdb;
+      border-bottom: 1px solid #e4e4e4;
+      color: #606266;
+    }
+    td{
+      border-right: 1px solid #e4e4e4;
+      border-bottom: 1px solid #e4e4e4;
+    }
+  }
+  // table中，select、el-dropdown、button样式，防止把table撑的高度变高
+  .el-button--text{
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+  .el-dropdown{
+    width: 100%;
+    cursor: pointer;
+  }
+}
+.el-table--border td, .el-table td{
+  border-right: 1px solid  #e4e4e4;
+  border-bottom: 1px solid  #e4e4e4;
+}
+.el-table__fixed-right::before, .el-table__fixed::before{
+  background-color: #e4e4e4;
+}
+.el-table--border::after, .el-table--group::after, .el-table::before{
+  background-color: #e4e4e4;
+}
+// table filter 高度
+.el-table__column-filter-trigger{
+  line-height: 23px;
+}
