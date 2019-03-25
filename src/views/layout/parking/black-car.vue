@@ -395,6 +395,12 @@ export default {
     padding: 0px;
     margin-left: 0px;
     height: calc(100vh - 75px);
+    /deep/ {
+      .el-pagination {
+        margin-top: 15px;
+        float: right;
+      }
+    }
   }
 
   .black-header {

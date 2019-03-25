@@ -428,12 +428,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-  /deep/ {
-    .el-pagination {
-      margin-top: 15px;
-      float: right;
-    }
-  }
   .container {
     margin-left: 310px !important;
     font-size: 14px;
@@ -441,6 +435,12 @@ export default {
     padding: 0px;
     margin-left: 0px;
     height: calc(100vh - 75px);
+    /deep/ {
+      .el-pagination {
+        margin-top: 15px;
+        float: right;
+      }
+    }
   }
 
   .free-header {

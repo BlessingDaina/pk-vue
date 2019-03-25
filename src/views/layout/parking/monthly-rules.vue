@@ -670,10 +670,6 @@ export default {
 
 <style scoped lang="scss">
   /deep/ {
-    .el-pagination {
-      margin-top: 15px;
-      float: right;
-    }
     .el-dialog {
       display: flex;
       flex-direction: column;
@@ -690,6 +686,12 @@ export default {
     padding: 0px;
     margin-left: 0px;
     height: calc(100vh - 75px);
+    /deep/ {
+      .el-pagination {
+        margin-top: 15px;
+        float: right;
+      }
+    }
   }
   .rules-header {
     margin: 0px 0px 15px 0px;
