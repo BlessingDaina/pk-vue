@@ -795,7 +795,20 @@ export default {
       if (!isVehicleNumber(value)) {
         callback(new Error('请输入正确的车牌号'))
       } else {
-        callback()
+        if (this.originalCarLicense !== value) {
+          this.$axios.post('/api/pklot/getIsUsedMonthlyCarLicense', {
+            carLicense: value,
+            parkingLotId: this.parkingLotId
+          }).then(response => {
+            if (response.data.data === 1) {
+              callback(new Error('该车牌号已存在'))
+            } else {
+              callback()
+            }
+          })
+        } else {
+          callback()
+        }
       }
     }
     let renewalEndDateValidation = (rule, value, callback) => {
@@ -925,7 +938,8 @@ export default {
       duringMonthly: '',
       importData: [],
       errMsgs: [],
-      returnErrMsgs: []
+      returnErrMsgs: [],
+      originalCarLicense: ''
     }
   },
   mounted () {
@@ -1197,10 +1211,15 @@ export default {
     },
     // 获取包月用户车辆列表
     getCarList () {
-      // listParkMonthlyCar(this.monthlyId, this.carKeyWord, this.monthlyCarCurrentPage, this.monthlyCarPageSize).then(response => {
-      //   this.carList = response.data
-      //   this.monthlyCarTotal = response.rowCount
-      // })
+      this.$axios.post('/api/pklot/getMonthlyCarListByPage', {
+        monthlyId: this.monthlyId,
+        searchInfo: this.carKeyWord,
+        pageNum: this.monthlyCarCurrentPage,
+        pageSize: this.monthlyCarPageSize
+      }).then(response => {
+        this.carList = response.data.data.items
+        this.monthlyCarTotal = response.data.data.count
+      })
     },
     // 搜索包月用户车辆
     searchMonthlyCar () {
@@ -1214,6 +1233,8 @@ export default {
     addMonthlyCar () {
       this.carInfoVisible = true
       this.carInfo = {
+        parkingLotId: this.parkingLotId,
+        monthlyId: this.monthlyId,
         carLicense: '',
         startDate: '',
         endDate: ''
@@ -1229,19 +1250,23 @@ export default {
       this.$refs['carInfoForm'].validate((valid, invalidFields) => {
         if (valid) {
           if (this.carInfo.monthlyCarId) {
-            // updateParkMonthlyCarInfo(this.monthlyId, this.parkingLotId, this.carInfo).then(response => {
-            //   this.carInfoVisible = false
-            //   this.$message.success('修改成功')
-            //   this.getCarList()
-            //   this.$refs['carInfoForm'].clearValidate()
-            // })
+            this.$axios.post('/api/pklot/updateMonthlyCar', this.carInfo).then(response => {
+              if (response.data.data === 1) {
+                this.carInfoVisible = false
+                this.$message.success('修改成功')
+                this.getCarList()
+                this.$refs['carInfoForm'].clearValidate()
+              }
+            })
           } else {
-            // saveParkMonthlyCarList(this.monthlyId, this.parkingLotId, this.carInfo).then(response => {
-            //   this.carInfoVisible = false
-            //   this.$message.success('添加成功')
-            //   this.getCarList()
-            //   this.$refs['carInfoForm'].clearValidate()
-            // })
+            this.$axios.post('/api/pklot/addMonthlyCar', this.carInfo).then(response => {
+              if (response.data.data === 1) {
+                this.carInfoVisible = false
+                this.$message.success('添加成功')
+                this.getCarList()
+                this.$refs['carInfoForm'].clearValidate()
+              }
+            })
           }
         } else {
           console.log('验证失败')
@@ -1264,6 +1289,7 @@ export default {
     editMonthlyCar (carInfo) {
       this.carInfoVisible = true
       this.carInfo = carInfo
+      this.originalCarLicense = this.carInfo.carLicense
       this.$set(this.carInfo, 'duringMonthly', [carInfo.startDate, carInfo.endDate])
     },
     // 删除包月用户车辆信息
@@ -1273,11 +1299,15 @@ export default {
     },
     // 删除包月用户车辆
     deleteMonthlyCar () {
-      // deleteParkMonthlyCar(this.monthlyId, this.parkingLotId, this.carInfo).then(response => {
-      //   this.deleteCarDialogVisible = false
-      //   this.$message.success('删除成功')
-      //   this.getCarList()
-      // })
+      this.$axios.post('/api/pklot/deleteMonthlyCar', {
+        monthlyCarId: this.carInfo.monthlyCarId
+      }).then(response => {
+        if (response.data.data === 1) {
+          this.deleteCarDialogVisible = false
+          this.$message.success('删除成功')
+          this.getCarList()
+        }
+      })
     },
     // 下载包月用户车辆导入模板
     downloadMonthlyCarTemp () {
