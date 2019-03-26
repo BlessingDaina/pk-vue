@@ -327,7 +327,7 @@
               <div class="explain">周一至周日单独设置</div>
             </el-form-item>
             <el-form-item label="备注" prop="remarks" label-width="150px" class="remarks">
-              <el-input v-model="ruleInfo.remarks" placeholder="请输入包月车位信息"
+              <el-input v-model="ruleInfo.remarks" placeholder="请输入备注信息"
                         autocomplete="off" ref="remarks"></el-input>
               <div class="explain">输入其他备注信息</div>
             </el-form-item>
