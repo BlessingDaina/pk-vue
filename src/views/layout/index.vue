@@ -72,6 +72,7 @@ export default {
   },
   methods: {
     logout () {
+      sessionStorage.clear()
     },
     handleOpen (key, keyPath) {
     },

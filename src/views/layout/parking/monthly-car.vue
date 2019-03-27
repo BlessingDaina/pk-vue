@@ -28,7 +28,7 @@
         </section>
       </div>
       <el-tabs v-model="monthlyType" @tab-click="handleClick">
-        <el-tab-pane name="-1">
+        <el-tab-pane name="all">
           <span slot="label">全部
           </span>
         </el-tab-pane>
@@ -819,7 +819,7 @@ export default {
     return {
       parkingLotId: '',
       searchInfo: '',
-      monthlyType: '-1',
+      monthlyType: 'all',
       monthlyList: [],
       tableHeight: this.tableHeights(),
       monthlyCurrentPage: 1,
@@ -959,7 +959,8 @@ export default {
         parkingLotId: this.parkingLotId,
         searchInfo: this.searchInfo,
         pageNum: this.monthlyCurrentPage,
-        pageSize: this.monthlyPageSize
+        pageSize: this.monthlyPageSize,
+        monthlyType: this.monthlyType
       }).then(response => {
         this.monthlyList = response.data.data.items
         this.monthlyTotal = response.data.data.count
