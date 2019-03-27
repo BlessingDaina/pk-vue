@@ -584,7 +584,6 @@
                 <span class="badge ordinary" v-if="!renewalUserInfo.monthlyType">普通包月</span>
                 <span class="badge ordinary" v-if="renewalUserInfo.monthlyType">分时包月</span>
                 <span class="badge ordinary" v-if="renewalUserInfo.phone">{{renewalUserInfo.phone}}</span>
-                <span class="badge ordinary">{{renewalUserInfo.totalCar}}辆车</span>
                 <span class="badge ordinary">{{renewalUserInfo.occupyNum}}车位</span>
                 <span class="badge price">{{renewalUserInfo.monthlyAmount}}元/月</span>
               </div>
@@ -597,7 +596,7 @@
               <el-input v-model="renewalInfo.amountReceivable" placeholder="请输入金额"
                         autocomplete="off" ref="amountReceivable"></el-input>
               元
-              <div class="explain">输入缴费金额，此金额将计入现金收费</div>
+              <div class="explain">输入缴费金额</div>
             </el-form-item>
             <el-form-item class="set-due-tiem" label="设置到期日期" prop="expdateType">
               <el-select v-model="renewalInfo.expdateType">
@@ -1074,6 +1073,7 @@ export default {
         } else {
           this.occupyList.forEach(function (item, index) {
             _this.occupyList[index].monthlyId = monthlyId
+            _this.occupyList[index].occupyType = String(_this.occupyList[index].occupyType)
           })
         }
       })
@@ -1097,25 +1097,26 @@ export default {
             this.userInfoForm.occupyList = JSON.stringify(this.occupyList)
             console.log(this.userInfoForm)
             if (this.userInfoForm.monthlyId) {
-              // saveParkMonthlyInfoAndOccupy(this.parkingLotId, this.userInfoForm).then(response => {
-              //   this.$refs['userInfoForm'].clearValidate()
-              //   this.getCarList()
-              //   this.setTabType = 'carInfo'
-              //   this.$message.success('保存成功')
-              //   let tab = {
-              //     name: this.setTabType
-              //   }
-              //   this.monthlyTab(tab)
-              //   let mainTab = {
-              //     name: this.monthlyType
-              //   }
-              //   this.handleClick(mainTab)
-              // })
+              this.$axios.post('/api/pklot/updateMonthlyAndOccupy', this.userInfoForm).then(response => {
+                if (response.data.data === 1) {
+                  this.$refs['userInfoForm'].clearValidate()
+                  this.getCarList()
+                  this.setTabType = 'carInfo'
+                  this.$message.success('保存成功')
+                  let tab = {
+                    name: this.setTabType
+                  }
+                  this.monthlyTab(tab)
+                  let mainTab = {
+                    name: this.monthlyType
+                  }
+                  this.handleClick(mainTab)
+                }
+              })
             } else {
               this.$axios.post('/api/pklot/addMonthlyAndOccupy', this.userInfoForm).then(response => {
                 if (response.data.status === 200) {
-                  this.$refs['userInfoForm'].clearValidate()
-                  this.monthlyId = response.data
+                  this.monthlyId = response.data.data
                   this.getCarList()
                   this.setTabType = 'carInfo'
                   this.$message.success('保存成功')
@@ -1255,6 +1256,7 @@ export default {
                 this.carInfoVisible = false
                 this.$message.success('修改成功')
                 this.getCarList()
+                this.getMonthlyList()
                 this.$refs['carInfoForm'].clearValidate()
               }
             })
@@ -1264,6 +1266,7 @@ export default {
                 this.carInfoVisible = false
                 this.$message.success('添加成功')
                 this.getCarList()
+                this.getMonthlyList()
                 this.$refs['carInfoForm'].clearValidate()
               }
             })
@@ -1352,6 +1355,8 @@ export default {
         expdateEnd: ''
       }
       this.monthlyId = info.monthlyId
+      this.renewalUserInfo = JSON.parse(JSON.stringify(info))
+      this.monthlyRenewalVisible = true
       // 获取最近到期时间
       // listNearEndDate(info.monthlyId).then(response => {
       //   this.nearDateList = response.data[0].nearDate.split(',')
