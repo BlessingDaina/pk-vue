@@ -30,27 +30,22 @@
       <el-tabs v-model="monthlyType" @tab-click="handleClick">
         <el-tab-pane name="-1">
           <span slot="label">全部
-            <el-badge type="primary" class="mark" :value="monthlyAmount.sum"/>
           </span>
         </el-tab-pane>
         <el-tab-pane name="0">
           <span slot="label">普通包月
-            <el-badge type="primary" class="mark" :value="monthlyAmount.general"/>
           </span>
         </el-tab-pane>
         <el-tab-pane name="1">
           <span slot="label">分时包月
-            <el-badge type="primary" class="mark" :value="monthlyAmount.subsection"/>
           </span>
         </el-tab-pane>
         <el-tab-pane name="2">
           <span slot="label">即将到期
-            <el-badge type="warning" class="mark" :value="monthlyAmount.soondue"/>
           </span>
         </el-tab-pane>
         <el-tab-pane name="3">
           <span slot="label">已到期
-            <el-badge class="mark" :value="monthlyAmount.overdue"/>
           </span>
         </el-tab-pane>
       </el-tabs>
@@ -825,13 +820,6 @@ export default {
       parkingLotId: '',
       searchInfo: '',
       monthlyType: '-1',
-      monthlyAmount: {
-        sum: 0,
-        general: 0,
-        subsection: 0,
-        soondue: 0,
-        overdue: 0
-      },
       monthlyList: [],
       tableHeight: this.tableHeights(),
       monthlyCurrentPage: 1,
@@ -960,12 +948,6 @@ export default {
     handleClick (tab, event) {
       this.monthlyType = tab.name
       this.getMonthlyList()
-    },
-    // 获取 所有类型总数
-    getAmountMonthly () {
-      // getAmountMonthly(this.parkingLotId).then(response => {
-      //   this.monthlyAmount = response.data
-      // })
     },
     // 调整表格高度
     tableHeights () {
@@ -1165,7 +1147,6 @@ export default {
             name: this.monthlyType
           }
           this.handleClick(tab)
-          this.getAmountMonthly()
         }
       })
     },
@@ -1346,13 +1327,15 @@ export default {
     // 包月续费弹出层
     renewalModel (info) {
       this.renewalInfo = {
-        guid: '',
+        guid: this.creatGuid(),
         monthlyType: '',
         expdateType: '0',
         expdateStart: '',
         amountReceivable: '',
         monthlyAmount: '',
-        expdateEnd: ''
+        expdateEnd: '',
+        monthlyId: info.monthlyId,
+        parkingLotId: info.parkingLotId
       }
       this.monthlyId = info.monthlyId
       this.renewalUserInfo = JSON.parse(JSON.stringify(info))
@@ -1427,15 +1410,17 @@ export default {
     },
     // 确认续费
     renewalSubmit () {
-      // saveParkMonthlyExtends(this.monthlyId, this.parkingLotId, this.renewalInfo).then(response => {
-      //   this.monthlyRenewalVisible = false
-      //   this.$message.success('续费成功')
-      //   let mainTab = {
-      //     name: this.monthlyType
-      //   }
-      //   this.handleClick(mainTab)
-      //   this.$refs['renewalInfoForm'].clearValidate()
-      // })
+      this.$axios.post('/api/pklot/addMonthlyExtend', this.renewalInfo).then(response => {
+        if (response.data.data === 1) {
+          this.monthlyRenewalVisible = false
+          this.$message.success('续费成功')
+          let mainTab = {
+            name: this.monthlyType
+          }
+          this.handleClick(mainTab)
+          this.$refs['renewalInfoForm'].clearValidate()
+        }
+      })
     },
     // 取消续费
     canselRenewal () {
@@ -1445,17 +1430,24 @@ export default {
     // 打开单独设置
     renewalSet () {
       this.renewalCarInfoVisible = true
-      // getMonthlyCarInit(this.monthlyId).then(response => {
-      //   this.renewalCarList = response.data
-      // })
+      this.$axios.post('/api/pklot/getMonthlyCarList', {
+        monthlyId: this.monthlyId
+      }).then(response => {
+        this.renewalCarList = response.data.data
+      })
     },
     // 单独设置页面保存
     saveRenewalCarList () {
-      // let renewalCarList = JSON.stringify(this.renewalCarList)
-      // saveMonthlyCarInfo(this.renewalInfo.guid, renewalCarList).then(response => {
-      //   this.renewalCarInfoVisible = false
-      //   this.$message.success('保存成功')
-      // })
+      let renewalCarList = JSON.stringify(this.renewalCarList)
+      this.$axios.post('/api/pklot/addMonthlyCarTmp', {
+        guid: this.renewalInfo.guid,
+        carInfoList: renewalCarList
+      }).then(response => {
+        if (response.data.data !== 0) {
+          this.renewalCarInfoVisible = false
+          this.$message.success('保存成功')
+        }
+      })
     },
     // 时间戳转换时分秒
     UnixToDate (unixTime) {
