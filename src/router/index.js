@@ -14,6 +14,7 @@ import parkingRecord from '@/views/layout/parking/parking-record'
 import fallibleLicense from '@/views/layout/parking/fallible-license'
 import temporaryCar from '@/views/layout/parking/temporary-car'
 import monthlyRules from '@/views/layout/parking/monthly-rules'
+import charge from '@/views/layout/sentry/charge'
 Vue.use(Router)
 
 const router = new Router({
@@ -70,6 +71,10 @@ const router = new Router({
           path: 'parking/monthly-rules',
           name: 'monthly-rules',
           component: monthlyRules
+        }, {
+          path: 'sentry/charge',
+          name: 'charge',
+          component: charge
         }, {
           path: 'parking/parkingHome.php',
           name: 'parkingHome',
