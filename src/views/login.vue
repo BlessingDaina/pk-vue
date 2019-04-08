@@ -8,7 +8,8 @@
     <el-form-item prop="passWord">
       <el-input type="password" v-model="user.passWord" auto-complete="off" placeholder="密码" @keyup.enter.native="login(user)"></el-input>
     </el-form-item>
-    <el-checkbox checked class="remember">记住密码</el-checkbox>
+    <br>
+    <br>
     <el-form-item style="width:100%;">
       <el-button type="primary" style="width:100%;" @click="login(user)">登录</el-button>
     </el-form-item>
@@ -51,7 +52,8 @@ export default {
           // 将用户token保存到vuex中
           _this.$store.commit('changeLogin', {
             token: _this.userToken,
-            userId: _this.userId
+            userId: _this.userId,
+            userName: response.data.data.userName
           })
           _this.$router.push({name: 'index'})
         } else if (response.data.status === 500) {

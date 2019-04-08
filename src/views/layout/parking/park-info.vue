@@ -689,11 +689,10 @@ export default {
       this.$axios.post('/api/pklot/getChargeRuleList', {
         parkingLotId
       }).then(response => {
-        console.log(this.accountRules)
         this.accountRules = response.data.data
-        if (response.data.length) {
+        if (response.data.data.length) {
           this.topRuleId = response.data.data[0].ruleId
-          this.endRuleId = response.data.data[response.data.length - 1].ruleId
+          this.endRuleId = response.data.data[response.data.data.length - 1].ruleId
         }
       })
     },
@@ -822,13 +821,17 @@ export default {
     },
     // 规则上下移动
     changeRuleOrderLevel (rule, direction) {
-      // updateChargeRuleOrderLevel(rule.parkingLotId, rule.rulesId, direction, rule.rulesName).then(response => {
-      //   console.log(response)
-      //   this.$message.success('操作成功')
-      //   this.getChargeRules(rule.parkingLotId)
-      // }).catch(error => {
-      //   console.log(error)
-      // })
+      this.$axios.post('/api/pklot/updateChargeRuleOrderLevel', {
+        parkingLotId: rule.parkingLotId,
+        ruleId: rule.ruleId,
+        direction: direction
+      }).then(response => {
+        console.log(response)
+        this.$message.success('操作成功')
+        this.getChargeRules(rule.parkingLotId)
+      }).catch(error => {
+        console.log(error)
+      })
     },
     // 删除价格规则
     deleteModel (rule) {

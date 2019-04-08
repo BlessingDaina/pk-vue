@@ -18,13 +18,12 @@
           <el-button type="primary" size="small" @click="getMonthlyList">查询</el-button>
           <el-button type="primary" size="small" @click="addMonthlyUser">添加
           </el-button>
-          <!--<inputExcle @getResult="getMonthlyExcelData"/>-->
+          <input-excel @getResult="getMonthlyExcelData"/>
           <!--<el-button type="primary" size="small" @click="exportMonthly" v-if="$store.state.layout.device!='mobile'">导出-->
           <!--</el-button>-->
-          <!--<el-button type="primary" size="small" @click="downloadMonthlyUserTemp"-->
-                     <!--v-if="$store.state.layout.device!='mobile'">-->
-            <!--下载模板-->
-          <!--</el-button>-->
+          <el-button type="primary" size="small" @click="downloadMonthlyUserTemp">
+            下载模板
+          </el-button>
         </section>
       </div>
       <el-tabs v-model="monthlyType" @tab-click="handleClick">
@@ -281,10 +280,10 @@
                   <div class="car-button-group">
                     <el-button size="mini" type="primary" @click="searchMonthlyCar">查询</el-button>
                     <el-button size="mini" type="primary" @click="addMonthlyCar">添加</el-button>
-                    <!--<input id="importCar" class="import-car" type="file" @change="exportData($event, 1)" ref="clearFile"-->
-                           <!--accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"/>-->
-                    <!--<el-button class="import-button" type="primary" size="mini" @click="importCar">导入</el-button>-->
-                    <!--<el-button size="mini" type="primary" @click="downloadMonthlyCarTemp">下载模板</el-button>-->
+                    <input id="importCar" class="import-car" type="file" @change="exportData($event, 1)" ref="clearFile"
+                           accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"/>
+                    <el-button class="import-button" type="primary" size="mini" @click="importCar">导入</el-button>
+                    <el-button size="mini" type="primary" @click="downloadMonthlyCarTemp">下载模板</el-button>
                   </div>
                 </div>
                 <div class="car-list-table">
@@ -758,8 +757,10 @@
 </template>
 
 <script>
+import XLSX from 'xlsx'
 import {isVehicleNumber} from '@/utils/parking/verify'
 import parkList from '../components/parkingList'
+import inputExcel from '../components/inputExcel'
 export default {
   name: 'monthly-car',
   data () {
@@ -936,7 +937,8 @@ export default {
     })
   },
   components: {
-    parkList
+    parkList,
+    inputExcel
   },
   methods: {
     // 从停车场列表组件获取当前选中的停车场id
@@ -1474,6 +1476,285 @@ export default {
       //   this.renewalSubmit()
       //   this.dealTimeoutDialogVisible = false
       // })
+    },
+    // 获取包月用户excel表格数据
+    getMonthlyExcelData (data) {
+      let _this = this
+      this.errMsgs = []
+      this.importData = []
+      this.returnErrMsgs = []
+      let msg = {}
+      let data_ = JSON.parse(JSON.stringify(data))
+      console.log(data_)
+      if (data_.length === 0) {
+        this.$message.error('不能导入空文件')
+      } else {
+        data_.forEach(function (item, index) {
+          data_[index] = JSON.stringify(data_[index]).replace(/\s/g, '')
+          data_[index] = data_[index].replace(/__EMPTY/, 'roomNumber')
+          data_[index] = data_[index].replace(/__EMPTY_1/, 'ownerName')
+          data_[index] = data_[index].replace(/__EMPTY_2/, 'phone')
+          data_[index] = data_[index].replace(/__EMPTY_3/, 'monthlyType')
+          data_[index] = data_[index].replace(/__EMPTY_4/, 'monthlyAmount')
+          data_[index] = data_[index].replace(/__EMPTY_5/, 'carLicense')
+          data_[index] = data_[index].replace(/__EMPTY_6/, 'startDate')
+          data_[index] = data_[index].replace(/__EMPTY_7/, 'endDate')
+          data_[index] = data_[index].replace(/__EMPTY_8/, 'parkingOccupy')
+          data_[index] = data_[index].replace(/__EMPTY_9/, 'categoryName')
+          data_[index] = data_[index].replace(/__EMPTY_10/, 'monthlySpace')
+          data_[index] = data_[index].replace(/__EMPTY_11/, 'remarks')
+          data_[index] = data_[index].replace(/固定/, 1)
+          data_[index] = data_[index].replace(/非固定/, 0)
+          data_[index] = data_[index].replace(/普通/, 0)
+          data_[index] = data_[index].replace(/分时/, 1)
+          data_[index] = JSON.parse(data_[index])
+          if (data_[index].startDate) {
+            data_[index].startDate = _this.dateFormat(data_[index].startDate)
+          } else {
+            data_[index].startDate = ''
+          }
+          if (data_[index].endDate) {
+            data_[index].endDate = _this.dateFormat(data_[index].endDate)
+          } else {
+            data_[index].endDate = ''
+          }
+        })
+        console.log(data_)
+        data_.forEach(function (item, index) {
+          msg = {}
+          console.log(item.roomNumber)
+          if (!item.roomNumber) {
+            msg.roomNumber = '房号未填写'
+          } else {
+            if (!item.ownerName) {
+              msg.ownerName = '车主未填写'
+            }
+            if (!item.phone) {
+              msg.phone = '联系电话未填写'
+            }
+            if (!item.monthlyType) {
+              msg.monthlyType = '包月类型未填写'
+            }
+            if (!item.monthlyAmount) {
+              msg.monthlyAmount = '包月金额未填写'
+            }
+            if (!item.carLicense) {
+              msg.carLicense = '车牌号未填写'
+            }
+            if (!item.startDate) {
+              msg.startDate = '起始日期未填写'
+            } else if (!_this.isDate(item.startDate)) {
+              msg.startDate = '起始日期格式不正确'
+            } else if (!item.endDate) {
+              msg.endDate = '结束日期未填写'
+            } else if (!_this.isDate(item.endDate)) {
+              msg.endDate = '结束日期格式不正确'
+            } else if (item.startDate > item.endDate) {
+              msg.endDate = '结束日期小于开始日期'
+            }
+            if (!item.parkingOccupy) {
+              msg.parkingOccupy = '停车场占位信息未填写'
+            }
+          }
+          if (JSON.stringify(msg) !== '{}') {
+            _this.errMsgs.push(msg)
+          } else {
+            _this.importData.push(item)
+          }
+        })
+        console.log(this.errMsgs)
+        console.log(this.importData)
+        // 导入
+        if (_this.importData.length !== 0 && _this.errMsgs.length === 0) {
+          _this.$axios.post('/api/pklot/importParkMonthlyInfo', {
+            parkingLotId: this.parkingLotId,
+            params: JSON.stringify(_this.importData)
+          }).then(response => {
+            if (response.data.data) {
+              this.returnErrMsgs = response.data.data
+              this.importMonthlyDialogVisible = true
+            } else {
+              this.getMonthlyList()
+              this.$message.success('导入成功')
+            }
+          })
+        } else if (_this.errMsgs.length !== 0) {
+          this.importMonthlyDialogVisible = true
+        }
+      }
+    },
+    // 判断是否为合法日期
+    isDate (str) {
+      let arr = str.split('-')
+      if (arr.length === 3) {
+        let intYear = parseInt(arr[0], 10)
+        let intMonth = parseInt(arr[1], 10)
+        let intDay = parseInt(arr[2], 10)
+        if (isNaN(intYear) || isNaN(intMonth) || isNaN(intDay)) {
+          return false
+        }
+        if (intYear > 2100 || intYear < 1900 || intMonth > 12 || intMonth < 0 || intDay > 31 || intDay < 0) {
+          return false
+        }
+        if ((intMonth === 4 || intMonth === 6 || intMonth === 9 || intMonth === 11) && intDay > 30) {
+          return false
+        }
+        if ((intYear % 4 === 0 && intYear % 100 !== 0) || intYear % 400 === 0) {
+          if (intDay > 29) {
+            return false
+          }
+        } else {
+          if (intDay > 28) return false
+        }
+        return true
+      }
+      return false
+    },
+    // excel常规转换为时间格式
+    dateFormat (numb, format) {
+      let time = new Date((numb - 1) * 24 * 3600000 + 1)
+      time.setYear(time.getFullYear() - 70)
+      let year = time.getFullYear() + ''
+      let month = time.getMonth() + 1 + ''
+      let date = time.getDate() + ''
+      if (format && format.length === 1) {
+        return year + format + month + format + date
+      }
+      return year + '-' + (month < 10 ? '0' + month : month) + '-' + (date < 10 ? '0' + date : date)
+    },
+    importCar () {
+      document.querySelector('#importCar').click()
+    },
+    exportData (event, tag) {
+      console.log(event)
+      console.log(tag)
+      if (!event.currentTarget.files.length) {
+        return
+      }
+      const that = this
+      // 拿取文件对象
+      let f = event.currentTarget.files[0]
+      // 用FileReader来读取
+      let reader = new FileReader()
+      // 重写FileReader上的readAsBinaryString方法
+      FileReader.prototype.readAsBinaryString = function (f) {
+        let binary = ''
+        let wb // 读取完成的数据
+        let outdata // 你需要的数据
+        let reader = new FileReader()
+        reader.onload = function (e) {
+          // 读取成Uint8Array，再转换为Unicode编码（Unicode占两个字节）
+          let bytes = new Uint8Array(reader.result)
+          console.log(reader.result)
+          let length = bytes.byteLength
+          for (let i = 0; i < length; i++) {
+            binary += String.fromCharCode(bytes[i])
+          }
+          // 接下来就是xlsx了，具体可看api
+          wb = XLSX.read(binary, {
+            type: 'binary'
+          })
+          outdata = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]])
+          outdata = JSON.parse(JSON.stringify(outdata))
+          outdata.shift()
+          outdata.shift()
+          console.log(outdata)
+          // 自定义方法向父组件传递数据
+          that.getMonthlyCarExcelData(outdata, tag)
+          // 清空file文件
+          that.$refs.clearFile.value = ''
+        }
+        reader.readAsArrayBuffer(f)
+      }
+      reader.readAsBinaryString(f)
+    },
+    // 获取包月用户车辆excel表格数据
+    getMonthlyCarExcelData (data, tag) {
+      console.log(1560)
+      let _this = this
+      this.errMsgs = []
+      this.importData = []
+      this.returnErrMsgs = []
+      let msg = {}
+      let data_ = JSON.parse(JSON.stringify(data))
+      console.log(data_)
+      if (data_.length === 0) {
+        this.$message.error('不能导入空文件')
+      } else {
+        data_.forEach(function (item, index) {
+          data_[index] = JSON.stringify(data_[index]).replace(/\s/g, '')
+          data_[index] = data_[index].replace(/包月车辆导入模板/, 'carLicense')
+          data_[index] = data_[index].replace(/__EMPTY/, 'startDate')
+          data_[index] = data_[index].replace(/__EMPTY_1/, 'endDate')
+          data_[index] = JSON.parse(data_[index])
+          if (data_[index].startDate) {
+            data_[index].startDate = _this.dateFormat(data_[index].startDate)
+          } else {
+            data_[index].startDate = ''
+          }
+          if (data_[index].endDate) {
+            data_[index].endDate = _this.dateFormat(data_[index].endDate)
+          } else {
+            data_[index].endDate = ''
+          }
+        })
+        console.log(data_)
+        data_.forEach(function (item, index) {
+          msg = {}
+          if (!item.carLicense) {
+            msg.carLicense = '车牌号未填写'
+          } else if (!isVehicleNumber(item.carLicense)) {
+            msg.carLicense = item.carLicense + '车牌号格式不正确'
+          }
+          if (!item.startDate) {
+            msg.startDate = item.carLicense + '起始日期未填写'
+          } else if (!_this.isDate(item.startDate)) {
+            msg.startDate = item.carLicense + '起始日期格式不正确'
+          } else if (!item.endDate) {
+            msg.endDate = item.carLicense + '结束日期未填写'
+          } else if (!_this.isDate(item.endDate)) {
+            msg.endDate = item.carLicense + '结束日期格式不正确'
+          } else if (item.startDate > item.endDate) {
+            msg.endDate = item.carLicense + '结束日期小于开始日期'
+          }
+          if (JSON.stringify(msg) !== '{}') {
+            _this.errMsgs.push(msg)
+          } else {
+            _this.importData.push(item)
+          }
+        })
+        console.log(this.errMsgs)
+        console.log(this.importData)
+        // 导入
+        if (_this.importData.length !== 0 && _this.errMsgs.length === 0) {
+          if (tag) {
+            _this.$axios.post('/api/pklot/importParkMonthlyCarInfo', {
+              monthlyId: this.monthlyId,
+              parkingLotId: this.parkingLotId,
+              params: JSON.stringify(_this.importData)
+            }).then(response => {
+              if (response.data.data) {
+                this.returnErrMsgs = response.data.data
+                this.importDialogVisible = true
+              } else {
+                this.getCarList()
+                this.$message.success('导入成功')
+              }
+            })
+          } else {
+            // importParkMonthlyCarExtendInfo(this.monthlyId, this.parkingLotId, JSON.stringify(_this.importData)).then(response => {
+            //   if (response.message === '导入成功') {
+            //     this.$message.success('导入成功')
+            //   } else {
+            //     this.returnErrMsgs = response.data
+            //     this.importDialogVisible = true
+            //   }
+            // })
+          }
+        } else if (_this.errMsgs.length !== 0) {
+          this.importDialogVisible = true
+        }
+      }
     }
   }
 }

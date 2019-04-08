@@ -33,12 +33,10 @@
         </div>
         <div class="navBarRight">
           <el-menu mode="horizontal" active-text-color="#232650"  text-color="#232650" router>
-            <el-menu-item index="/parking/parkingHome.php">Home</el-menu-item>
-            <el-menu-item index="/message"><i class="el-icon-message" style="color: #232650"></i> </el-menu-item>
-            <el-menu-item index="/help"><i class="el-icon-question" style="color: #232650"></i> </el-menu-item>
             <el-submenu index="2">
-              <template slot="title"><img class="userHead" src="../images/head.png"> 选项4</template>
-              <el-menu-item index="4">账号管理</el-menu-item>
+              <template slot="title"><img class="userHead" src="../images/head.png"> {{userName}}
+                <i class="down el-icon-arrow-down"></i>
+              </template>
               <el-menu-item @click="logout" index="/login">安全退出</el-menu-item>
             </el-submenu>
           </el-menu>
@@ -57,6 +55,7 @@
 export default {
   created () {
     this.getAllSite()
+    this.userName = sessionStorage.getItem('userName')
   },
   data () {
     return {
@@ -67,7 +66,8 @@ export default {
       index: '',
       thisAsideMenu: [],
       thisMenuList: [],
-      menuTree: []
+      menuTree: [],
+      userName: ''
     }
   },
   methods: {
@@ -95,12 +95,12 @@ export default {
       })
     },
     getMenu (siteId) {
-      let _this = this
-      _this.$axios.post('/api/sys/getMenus', {
+      this.$axios.post('/api/sys/getMenus', {
         siteId: siteId
       }).then(response => {
-        console.log(response)
-        _this.menus = response.data.data
+        this.menus = response.data.data
+        console.log(this.menus)
+        // this.$router.push({path: this.menus[0].menus[0].href})
       }).catch(error => {
         console.log(error)
       })
@@ -168,11 +168,17 @@ export default {
     }
     .navBarRight {
       position: absolute;
-      right: 50px;
+      right: 0px;
       .userHead {
         height: 30px;
         width: 30px;
         border-radius:50%;
+      }
+      .down {
+        color: #909399;
+      }
+      .el-menu-item :hover {
+        background-color:yellow;
       }
     }
   }
