@@ -53,7 +53,7 @@ export default {
           outdata = JSON.parse(JSON.stringify(outdata))
           outdata.shift()
           outdata.shift()
-          outdata.pop()
+          // outdata.pop()
           console.log(outdata)
           // 自定义方法向父组件传递数据
           that.$emit('getResult', outdata)
