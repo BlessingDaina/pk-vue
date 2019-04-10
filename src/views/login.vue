@@ -53,7 +53,8 @@ export default {
           _this.$store.commit('changeLogin', {
             token: _this.userToken,
             userId: _this.userId,
-            userName: response.data.data.userName
+            userName: response.data.data.userName,
+            roleId: response.data.data.roleId
           })
           _this.$router.push({name: 'index'})
         } else if (response.data.status === 500) {

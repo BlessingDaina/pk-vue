@@ -9,7 +9,9 @@ const store = new Vuex.Store({
     // 存储uid
     userId: sessionStorage.getItem('userId') ? sessionStorage.getItem('userId') : '',
     // 存储userName
-    user: sessionStorage.getItem('userName') ? sessionStorage.getItem('userName') : ''
+    user: sessionStorage.getItem('userName') ? sessionStorage.getItem('userName') : '',
+    // 存储roleId
+    roleId: sessionStorage.getItem('roleId') ? sessionStorage.getItem('roleId') : ''
   },
   mutations: {
     // 修改token，并将token存入sessionStorage
@@ -20,6 +22,8 @@ const store = new Vuex.Store({
       sessionStorage.setItem('userId', user.userId)
       state.userName = user.userName
       sessionStorage.setItem('userName', user.userName)
+      state.roleId = user.roleId
+      sessionStorage.setItem('roleId', user.roleId)
     }
   }
 })

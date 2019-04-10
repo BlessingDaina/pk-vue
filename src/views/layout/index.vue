@@ -85,7 +85,9 @@ export default {
     },
     getAllSite () {
       let _this = this
-      _this.$axios.post('/api/sys/getSites').then(response => {
+      _this.$axios.post('/api/sys/getSites', {
+        roleId: sessionStorage.getItem('roleId')
+      }).then(response => {
         _this.sites = response.data.data
         _this.selectedSiteName = response.data.data[0].siteName
         _this.handleSelect(response.data.data[0])

@@ -19,15 +19,14 @@
           <el-button type="primary" size="small" @click="addMonthlyUser">添加
           </el-button>
           <input-excel @getResult="getMonthlyExcelData"/>
-          <!--<el-button type="primary" size="small" @click="exportMonthly" v-if="$store.state.layout.device!='mobile'">导出-->
-          <!--</el-button>-->
+          <el-button type="primary" size="small" @click="exportMonthly">导出</el-button>
           <el-button type="primary" size="small" @click="downloadMonthlyUserTemp">
             下载模板
           </el-button>
         </section>
       </div>
       <el-tabs v-model="monthlyType" @tab-click="handleClick">
-        <el-tab-pane name="all">
+        <el-tab-pane name="-1">
           <span slot="label">全部
           </span>
         </el-tab-pane>
@@ -37,14 +36,6 @@
         </el-tab-pane>
         <el-tab-pane name="1">
           <span slot="label">分时包月
-          </span>
-        </el-tab-pane>
-        <el-tab-pane name="2">
-          <span slot="label">即将到期
-          </span>
-        </el-tab-pane>
-        <el-tab-pane name="3">
-          <span slot="label">已到期
           </span>
         </el-tab-pane>
       </el-tabs>
@@ -761,6 +752,7 @@ import XLSX from 'xlsx'
 import {isVehicleNumber} from '@/utils/parking/verify'
 import parkList from '../components/parkingList'
 import inputExcel from '../components/inputExcel'
+import {exportExcel} from '@/api/export'
 export default {
   name: 'monthly-car',
   data () {
@@ -820,7 +812,7 @@ export default {
     return {
       parkingLotId: '',
       searchInfo: '',
-      monthlyType: 'all',
+      monthlyType: '-1',
       monthlyList: [],
       tableHeight: this.tableHeights(),
       monthlyCurrentPage: 1,
@@ -945,6 +937,8 @@ export default {
     getParkLotIdFromList (data) {
       this.parkingLotId = data
       this.getMonthlyList()
+      // this.$axios.post('/api/pklot/exportTest')
+      // exportExcel('/api/pklot/exportTest', {}, 'test')
     },
     // 切换选项卡
     handleClick (tab, event) {
@@ -1755,6 +1749,15 @@ export default {
           this.importDialogVisible = true
         }
       }
+    },
+    // 导出包月用户
+    exportMonthly () {
+      let data = {
+        parkingLotId: this.parkingLotId,
+        searchType: this.monthlyType,
+        keyword: this.searchInfo
+      }
+      exportExcel('/api/pklot/exportParkMonthly', data, '包月车辆统计')
     }
   }
 }

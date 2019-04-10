@@ -18,6 +18,8 @@
           <el-button type="primary" size="small" @click="getBlackCarList">查询</el-button>
           <el-button type="primary" size="small" @click="openBlackModel">添加
           </el-button>
+          <el-button type="primary" size="small" @click="exportOn">导出
+          </el-button>
         </section>
       </div>
       <el-tabs v-model="status" @tab-click="handleClick">
@@ -192,6 +194,7 @@
 <script>
 import {isVehicleNumber} from '@/utils/parking/verify'
 import parkList from '../components/parkingList'
+import {exportExcel} from '@/api/export'
 export default {
   name: 'black-car',
   data () {
@@ -382,6 +385,16 @@ export default {
       if (type === '0') {
         this.blackCarInfo.blackTime = []
       }
+    },
+    // 导出
+    exportOn () {
+      let data = {
+        specialType: 1,
+        carMessage: this.searchInfo,
+        parkingLotId: this.parkingLotId,
+        status: this.status
+      }
+      exportExcel('/api/pklot/exportSpecialCar', data, '黑名车辆统计')
     }
   }
 }
