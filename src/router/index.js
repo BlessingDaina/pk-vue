@@ -14,6 +14,10 @@ import parkingRecord from '@/views/layout/parking/parking-record'
 import fallibleLicense from '@/views/layout/parking/fallible-license'
 import temporaryCar from '@/views/layout/parking/temporary-car'
 import monthlyRules from '@/views/layout/parking/monthly-rules'
+import businessOverview from '@/views/layout/parking/business-overview'
+import incomeStatistics from '@/views/layout/parking/income-statistics'
+import monthlyStatistics from '@/views/layout/parking/monthly-statistics'
+import parkingStatistics from '@/views/layout/parking/parking-statistics'
 import charge from '@/views/layout/sentry/charge'
 Vue.use(Router)
 
@@ -71,6 +75,22 @@ const router = new Router({
           path: 'parking/monthly-rules',
           name: 'monthly-rules',
           component: monthlyRules
+        }, {
+          path: 'parking/business-overview',
+          name: 'business-overview',
+          component: businessOverview
+        }, {
+          path: 'parking/income-statistics',
+          name: 'income-statistics',
+          component: incomeStatistics
+        }, {
+          path: 'parking/monthly-statistics',
+          name: 'monthly-statistics',
+          component: monthlyStatistics
+        }, {
+          path: 'parking/parking-statistics',
+          name: 'parking-statistics',
+          component: parkingStatistics
         }, {
           path: 'sentry/charge',
           name: 'charge',
