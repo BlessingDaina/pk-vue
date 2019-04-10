@@ -16,13 +16,16 @@
         </div>
         <section class="button-group">
           <el-date-picker
+            size="small"
             v-model="date"
             type="daterange"
-            size="small"
-            :picker-options="pickerOptions"
+            align="center"
+            unlink-panels
             range-separator="至"
             start-placeholder="开始日期"
-            end-placeholder="结束日期">
+            end-placeholder="结束日期"
+            value-format="yyyy-MM-dd"
+            :picker-options="pickerOptions">
           </el-date-picker>
           <el-button type="primary" size="small" @click="getRecordList">查询</el-button>
           <el-button type="primary" size="small">导出
