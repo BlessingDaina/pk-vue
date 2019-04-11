@@ -67,32 +67,6 @@
           >
           </el-table-column>
           <el-table-column
-            prop="freeType"
-            align="center"
-            min-width="101"
-          >
-            <template slot="header" slot-scope="scope">
-              <el-dropdown trigger="click" @command="selectFreeType"
-                           placement="bottom"
-                           style="width: 80px;padding: 0;text-align: center;">
-                  <span class="el-dropdown-link">
-                      <p class="show-menu">免费类别<i class="el-icon-arrow-down el-icon--right set-bottom"></i></p>
-                      <p class="show-text">{{showText.freeType || "全部"}}</p>
-                  </span>
-                <el-dropdown-menu slot="dropdown">
-                  <el-dropdown-item key="-1" command="">
-                    全部
-                  </el-dropdown-item>
-                  <el-dropdown-item v-for="item in freeTypes"
-                                    :class="{parkstatis:(freeTypeActive === item.categoryValue)}"
-                                    :key="item.categoryValue" :command="{type:item.categoryValue, text:item.categoryName}">
-                    {{item.categoryName}}
-                  </el-dropdown-item>
-                </el-dropdown-menu>
-              </el-dropdown>
-            </template>
-          </el-table-column>
-          <el-table-column
             prop="entranceTime"
             label="入场时间"
             align="center"

@@ -1325,11 +1325,11 @@ export default {
     renewalModel (info) {
       this.renewalInfo = {
         guid: this.creatGuid(),
-        monthlyType: '',
+        monthlyType: info.monthlyType,
         expdateType: '0',
         expdateStart: '',
         amountReceivable: '',
-        monthlyAmount: '',
+        monthlyAmount: info.monthlyAmount,
         expdateEnd: '',
         monthlyId: info.monthlyId,
         parkingLotId: info.parkingLotId

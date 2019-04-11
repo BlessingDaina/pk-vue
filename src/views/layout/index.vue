@@ -2,16 +2,22 @@
   <el-container>
     <el-aside width="200px">
       <el-menu
-        :default-active="$route.path" @open="handleOpen" @close="handleClose"
-        background-color="#304156" text-color="#fff" active-text-color="#ffd04b" router>
+        :default-active="$route.path"
+        @open="handleOpen"
+        @close="handleClose"
+        background-color="#304156"
+        text-color="#fff"
+        active-text-color="#ffd04b"
+        router
+      >
         <el-submenu v-for="menu in menus" :key="menu.menuId" :index="menu.icon">
-          <template slot="title"><i class="iconfont" :class="menu.icon"></i> {{menu.menuName}}</template>
-          <el-menu @open="handleOpen" @close="handleClose"
-                   background-color="#1f2d3d" text-color="#fff" active-text-color="#ffd04b" router>
+          <template slot="title">
+            <i class="iconfont" :class="menu.icon"></i>
+            {{menu.menuName}}
+          </template>
             <el-menu-item v-for="menuChild in menu.menus" :key="menuChild.menuId" :index="'/'+menuChild.href">
               <i class="iconfont" :class="menuChild.icon"></i> {{menuChild.menuName}}
             </el-menu-item>
-          </el-menu>
         </el-submenu>
       </el-menu>
     </el-aside>
@@ -199,6 +205,15 @@ export default {
       .el-menu-item {
         /*background-color: #1f2d3d !important;*/
         padding-left: 30px !important;
+      }
+      .el-menu-item.is-active {
+        color: #409EFF !important;
+      }
+      .is-active{
+        background-color: rgb(38,52,69) !important;
+        > .el-submenu__title{
+          color: #f4f4f5!important;
+        }
       }
     }
   }

@@ -9,7 +9,7 @@
     <div class="container">
       <div class="monthly-income-header">
         <div class="search-input">
-          <el-input v-model="carLicense" placeholder="请输入车牌、备注信息" size="small"
+          <el-input v-model="carLicense" placeholder="请输入车牌号" size="small"
                     @keyup.enter.native="getMonthlyIncome"><i slot="prefix"
                                                          class="el-input__icon el-icon-search"></i>
           </el-input>
@@ -30,6 +30,90 @@
           <el-button type="primary" size="small" @click="getMonthlyIncome">查询</el-button>
         </section>
       </div>
+      <div class="monthly-income-content">
+        <el-table
+          :data="tableData"
+          style="width: 100%;"
+          border
+          class="table"
+          :height="tableHeight"
+        >
+          <el-table-column
+            prop="extendDate"
+            label="支付时间"
+            align="center"
+            min-width="170"
+          >
+          </el-table-column>
+          <el-table-column
+            prop="roomNumber"
+            label="房号"
+            align="center"
+            min-width="100"
+          >
+          </el-table-column>
+          <el-table-column
+            prop="ownerName"
+            label="车主"
+            align="center"
+            min-width="100"
+          >
+          </el-table-column>
+          <el-table-column
+            prop="carLicense"
+            label="车牌号"
+            align="center"
+            min-width="100"
+          >
+          </el-table-column>
+          <el-table-column
+            prop="expdatStart"
+            label="包月起始"
+            align="center"
+            min-width="100"
+          >
+          </el-table-column>
+          <el-table-column
+            prop="expdateEnd"
+            label="包月终止"
+            align="center"
+            min-width="100"
+          >
+          </el-table-column>
+          <el-table-column
+            prop="amountReceivable"
+            label="应付"
+            align="center"
+            min-width="80"
+          >
+          </el-table-column>
+          <el-table-column
+            prop="actPay"
+            label="实付"
+            align="center"
+            min-width="80"
+          >
+          </el-table-column>
+          <el-table-column
+            prop="remarks"
+            label="备注"
+            align="center"
+            min-width="100"
+          >
+          </el-table-column>
+        </el-table>
+      </div>
+      <el-pagination
+        :disabled="totalMonthly === 0"
+        @size-change="pageSizeChange"
+        @current-change="currentPageChange"
+        :current-page="pageNum"
+        :page-sizes="[10, 20, 30, 40]"
+        :page-size="pageSize"
+        layout="total, sizes, prev, pager, next, jumper"
+        background
+        :total="totalMonthly">
+      </el-pagination>
     </div>
   </div>
 </template>
@@ -134,6 +218,15 @@ export default {
         this.tableData = response.data.data.recordItems
         this.totalMonthly = response.data.data.count
       })
+    },
+    // 分页
+    pageSizeChange (val) {
+      this.pageSize = val
+      this.getMonthlyIncome()
+    },
+    currentPageChange (val) {
+      this.pageNum = val
+      this.getMonthlyIncome()
     }
   }
 }
@@ -168,5 +261,8 @@ export default {
         margin-left: 10px;
       }
     }
+  }
+  .monthly-income-content {
+    margin-top: 20px;
   }
 </style>
