@@ -6,7 +6,7 @@
 <template>
     <div>
       <parkList v-on:getSelectedParkLotId="getParkLotIdFromList"/>
-      <div class="container">
+      <div class="container" :class="{'covered':showTagList}">
         <div class="rules-header">
           <div class="search-input">
             <el-input v-model="searchInfo" placeholder="请输入包月规则名称查询" size="small"
@@ -365,6 +365,8 @@ export default {
   name: 'monthly-rules',
   data () {
     return {
+      isAdmin: sessionStorage.getItem('isAdmin'),
+      showTagList: false,
       parkingLotId: '',
       rulesList: [],
       searchInfo: '',
@@ -467,6 +469,9 @@ export default {
     getParkLotIdFromList (data) {
       this.parkingLotId = data
       this.getRulesList()
+      if (this.isAdmin === '1') {
+        this.showTagList = true
+      }
     },
     // 调整表格高度
     tableHeights () {
@@ -679,8 +684,11 @@ export default {
       padding-right: 0px;
     }
   }
+  .covered {
+    margin-left: 315px !important;
+  }
   .container {
-    margin-left: 310px !important;
+    margin-left: 0;
     font-size: 14px;
     color: #333;
     padding: 0px;

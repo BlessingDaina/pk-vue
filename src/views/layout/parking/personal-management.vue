@@ -4,7 +4,7 @@
 * @description:
 */
 <template>
-  <div class="content">
+  <div class="container">
     <div class="person-header">
       <div class="search-input">
         <el-input v-model="userInfo" placeholder="输入用户名、登录账号、手机号码查询" size="small" @keyup.enter.native="getUserList"><i
@@ -464,9 +464,9 @@ export default {
       margin: 0;
     }
   }
-  .content {
-    margin: 10px;
-  }
+  /*.content {*/
+    /*margin: 10px;*/
+  /*}*/
   .person-header {
     margin: 0px 0px 0px 0px;
     position: relative;

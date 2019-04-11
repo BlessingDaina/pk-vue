@@ -6,7 +6,7 @@
 <template>
   <div>
     <parkList v-on:getSelectedParkLotId="getParkLotIdFromList"/>
-    <div class="container">
+    <div class="container" :class="{'covered':showTag}">
       <div class="monthly-header">
         <div class="search-input">
           <el-input v-model="searchInfo" placeholder="请输入房号、车主、车牌或者包月车位查询" size="small"
@@ -810,6 +810,8 @@ export default {
       }
     }
     return {
+      isAdmin: sessionStorage.getItem('isAdmin'),
+      showTag: false,
       parkingLotId: '',
       searchInfo: '',
       monthlyType: '-1',
@@ -939,6 +941,9 @@ export default {
       this.getMonthlyList()
       // this.$axios.post('/api/pklot/exportTest')
       // exportExcel('/api/pklot/exportTest', {}, 'test')
+      if (this.isAdmin === '1') {
+        this.showTag = true
+      }
     },
     // 切换选项卡
     handleClick (tab, event) {
@@ -1814,9 +1819,11 @@ export default {
     color: #fff;
     margin-right: 5px;
   }
-
+  .covered {
+    margin-left: 315px !important;
+  }
   .container {
-    margin-left: 310px !important;
+    margin-left: 0;
     font-size: 14px;
     color: #333;
     padding: 0px;

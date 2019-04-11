@@ -6,7 +6,7 @@
 <template>
   <div>
     <parkList v-on:getSelectedParkLotId="getParkLotIdFromList"/>
-    <div class="container">
+    <div class="container" :class="{'covered':showTag}">
       <div class="channel-header">
         <div class="search-input">
           <el-input v-model="drivewayName" placeholder="请输入通道名称" size="small"
@@ -237,6 +237,8 @@ export default {
   name: 'channel-management',
   data () {
     return {
+      isAdmin: sessionStorage.getItem('isAdmin'),
+      showTag: false,
       parkingLotId: '',
       channelType: 'all',
       drivewayName: '',
@@ -265,6 +267,9 @@ export default {
       this.parkingLotId = data
       this.getDrivewayList()
       this.channelType = 'all'
+      if (this.isAdmin === '1') {
+        this.showTag = true
+      }
     },
     // 通道搜索
     searchChannel () {
@@ -434,8 +439,11 @@ export default {
       padding: 10px 20px;
     }
   }
+  .covered {
+    margin-left: 315px !important;
+  }
   .container {
-    margin-left: 310px !important;
+    margin-left: 0;
     font-size: 14px;
     color: #333;
     padding: 0px;

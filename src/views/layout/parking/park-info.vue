@@ -6,7 +6,7 @@
 <template>
   <div>
     <parkList v-on:getSelectedParkLotId="getParkLotIdFromList"/>
-    <div class="content">
+    <div class="content" :class="{'covered':showTag}">
       <el-scrollbar style="height: 100%">
         <div class="basic-info info-content">
           <el-card shadow="hover">
@@ -501,6 +501,8 @@ export default {
       }
     }
     return {
+      isAdmin: sessionStorage.getItem('isAdmin'),
+      showTag: false,
       parkingLotId: '',
       managementParkId: '',
       chargeParkId: '',
@@ -639,6 +641,9 @@ export default {
       this.parkingLotId = data
       this.getParkingLotInfo(this.parkingLotId, 1)
       this.getNextParkLot(this.parkingLotId)
+      if (this.isAdmin === '1') {
+        this.showTag = true
+      }
     },
     // 获取停车场基本信息
     getParkingLotInfo (parkingLotId, tag) {
@@ -873,9 +878,11 @@ export default {
       overflow-x: hidden;
     }
   }
-
+  .covered {
+    margin-left: 315px !important;
+  }
   .content {
-    margin-left: 310px;
+    margin-left: 0;
     height: calc(100vh - 75px);
   }
 

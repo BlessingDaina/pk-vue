@@ -4,7 +4,7 @@
 * @description:
 */
 <template>
-  <div class="parking-lot-list-position">
+  <div class="parking-lot-list-position" v-if="showTag">
     <el-card class="parking-lot-list-content" id="cardStyle" shadow="hover"
              :body-style="{ padding: '0px',height:'100%' }">
       <div class="search-parking-lot">
@@ -56,10 +56,15 @@ export default {
       parkingLotList: [],
       pageSize: 10,
       totalPage: 0,
-      pageNum: 1
+      pageNum: 1,
+      isAdmin: sessionStorage.getItem('isAdmin'),
+      showTag: false
     }
   },
   created () {
+    if (this.isAdmin === '1') {
+      this.showTag = true
+    }
     this.getParkingList()
   },
   methods: {
@@ -79,10 +84,15 @@ export default {
       let pageSize = this.pageSize
       let pageNum = this.pageNum
       let parkingLotName = this.parkingLotName
+      let parkingLotId = sessionStorage.getItem('parkingLotId')
+      if (parkingLotId === 'null') {
+        parkingLotId = ''
+      }
       this.$axios.post('/api/pklot/getParkingLotList', {
         pageNum: pageNum,
         pageSize: pageSize,
-        parkingLotName: parkingLotName
+        parkingLotName: parkingLotName,
+        parkingLotId: parkingLotId
       }).then(response => {
         this.totalPage = response.data.data.count
         this.parkingLotList = response.data.data.items

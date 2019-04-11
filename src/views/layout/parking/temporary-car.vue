@@ -6,7 +6,7 @@
 <template>
   <div>
     <parkList v-on:getSelectedParkLotId="getParkLotIdFromList"/>
-    <div class="container">
+    <div class="container" :class="{'covered':showTag}">
       <div class="temp-header">
         <div class="search-input">
           <el-input v-model="searchInfo" placeholder="请输入车牌" size="small"
@@ -199,6 +199,8 @@ export default {
       }
     }
     return {
+      isAdmin: sessionStorage.getItem('isAdmin'),
+      showTag: false,
       tableHeight: this.tableHeights(),
       parkingLotId: '',
       searchInfo: '',
@@ -249,6 +251,9 @@ export default {
       this.parkingLotId = data
       this.getTempType()
       this.getTempCarList()
+      if (this.isAdmin === '1') {
+        this.showTag = true
+      }
     },
     // 获取临停类型
     getTempType () {
@@ -376,8 +381,11 @@ export default {
 </script>
 
 <style scoped lang="scss">
+  .covered {
+    margin-left: 315px !important;
+  }
   .container {
-    margin-left: 310px !important;
+    margin-left: 0;
     font-size: 14px;
     color: #333;
     padding: 0px;

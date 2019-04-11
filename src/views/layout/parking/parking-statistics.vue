@@ -6,7 +6,7 @@
 <template>
   <div>
     <parkList v-on:getSelectedParkLotId="getParkLotIdFromList"/>
-    <div class="container">
+    <div class="container" :class="{'covered':showTag}">
       <div class="temp-header">
         <div class="search-input">
           <el-input v-model="searchInfo" placeholder="请输入车牌号" size="small"
@@ -111,6 +111,8 @@ export default {
   name: 'parking-statistics',
   data () {
     return {
+      isAdmin: sessionStorage.getItem('isAdmin'),
+      showTag: false,
       tableHeight: this.tableHeights(),
       pickerOptions: { // 时间限制
         disabledDate (time) {
@@ -186,6 +188,9 @@ export default {
       this.initData()
       this.getFreeTypeList()
       this.getTempParking()
+      if (this.isAdmin === '1') {
+        this.showTag = true
+      }
     },
     // 调整表格高度
     tableHeights () {
@@ -246,9 +251,11 @@ export default {
 </script>
 
 <style scoped lang="scss">
-
+  .covered {
+    margin-left: 315px !important;
+  }
   .container {
-    margin-left: 310px !important;
+    margin-left: 0;
     font-size: 14px;
     color: #333;
     padding: 0px;

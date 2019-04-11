@@ -6,7 +6,7 @@
 <template>
   <div>
     <parkList v-on:getSelectedParkLotId="getParkLotIdFromList"/>
-    <div class="container">
+    <div class="container" :class="{'covered':showTag}">
       <div class="fallible-header">
         <div class="search-input">
           <el-input v-model="searchInfo" placeholder="请输入车牌号" size="small"
@@ -162,6 +162,8 @@ export default {
       }
     }
     return {
+      isAdmin: sessionStorage.getItem('isAdmin'),
+      showTag: false,
       tableHeight: this.tableHeights(),
       parkingLotId: '',
       searchInfo: '',
@@ -199,6 +201,9 @@ export default {
     getParkLotIdFromList (data) {
       this.parkingLotId = data
       this.getFallibleLicenseList()
+      if (this.isAdmin === '1') {
+        this.showTag = true
+      }
     },
     // 调整表格高度
     tableHeights () {
@@ -303,8 +308,11 @@ export default {
 </script>
 
 <style scoped lang="scss">
+  .covered {
+    margin-left: 315px !important;
+  }
   .container {
-    margin-left: 310px !important;
+    margin-left: 0;
     font-size: 14px;
     color: #333;
     padding: 0px;

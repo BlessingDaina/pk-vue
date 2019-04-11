@@ -6,7 +6,7 @@
 <template>
   <div>
     <parkList v-on:getSelectedParkLotId="getParkLotIdFromList"/>
-    <div class="container">
+    <div class="container" :class="{'covered':showTag}">
       <div class="income-header">
         <el-date-picker
           size="small"
@@ -70,6 +70,8 @@ export default {
   name: 'income-statistics',
   data () {
     return {
+      isAdmin: sessionStorage.getItem('isAdmin'),
+      showTag: false,
       pickerOptions: { // 时间限制
         disabledDate (time) {
           return time.getTime() > Date.now() // 开始时间最大为当天
@@ -130,6 +132,9 @@ export default {
       this.parkingLotId = data
       this.initData()
       this.getRevenue()
+      if (this.isAdmin === '1') {
+        this.showTag = true
+      }
     },
     initData () {
       let date = getFormatDateTime()
@@ -176,8 +181,11 @@ export default {
 </script>
 
 <style scoped lang="scss">
+  .covered {
+    margin-left: 315px !important;
+  }
   .container {
-    margin-left: 310px !important;
+    margin-left: 0;
     font-size: 14px;
     color: #333;
     padding: 0px;

@@ -235,7 +235,7 @@ export default {
     overflow-y: auto;
     padding: 0;
     .content {
-      margin: 10px;
+      margin: 10px 10px 10px 20px;
     }
   }
 

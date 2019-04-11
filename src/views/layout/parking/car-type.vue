@@ -6,7 +6,7 @@
 <template>
   <div>
     <parkList v-on:getSelectedParkLotId="getParkLotIdFromList"/>
-    <div class="container">
+    <div class="container" :class="{'covered':showTag}">
       <el-scrollbar style="height: 100%">
         <el-card shadow="hover">
           <div slot="header">
@@ -106,6 +106,8 @@ export default {
   name: 'car-type',
   data () {
     return {
+      isAdmin: sessionStorage.getItem('isAdmin'),
+      showTag: false,
       parkingLotId: '',
       monthlyTypeList: [],
       freeTypeList: [],
@@ -135,6 +137,9 @@ export default {
       this.getFreeType()
       this.getFreePutType()
       this.getTempType()
+      if (this.isAdmin === '1') {
+        this.showTag = true
+      }
     },
     // 获取包月类型
     getMonthlyType () {
@@ -271,8 +276,11 @@ export default {
       padding: 10px 20px;
     }
   }
+  .covered {
+    margin-left: 315px !important;
+  }
   .container {
-    margin-left: 310px !important;
+    margin-left: 0;
     font-size: 14px;
     color: #333;
     padding: 0px;

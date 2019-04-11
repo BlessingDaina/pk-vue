@@ -6,7 +6,7 @@
 <template>
   <div>
     <parkList v-on:getSelectedParkLotId="getParkLotIdFromList"/>
-    <div class="container">
+    <div class="container" :class="{'covered':showTag}">
       <div class="black-header">
         <div class="search-input">
           <el-input v-model="searchInfo" placeholder="请输入车牌、备注信息" size="small"
@@ -219,6 +219,8 @@ export default {
       }
     }
     return {
+      isAdmin: sessionStorage.getItem('isAdmin'),
+      showTag: false,
       parkingLotId: '',
       tableHeight: this.tableHeights(),
       status: '1',
@@ -256,6 +258,9 @@ export default {
     getParkLotIdFromList (data) {
       this.parkingLotId = data
       this.getBlackCarList()
+      if (this.isAdmin === '1') {
+        this.showTag = true
+      }
     },
     // 获取黑名车辆
     getBlackCarList () {
@@ -401,8 +406,11 @@ export default {
 </script>
 
 <style scoped lang="scss">
+  .covered {
+    margin-left: 315px !important;
+  }
   .container {
-    margin-left: 310px !important;
+    margin-left: 0;
     font-size: 14px;
     color: #333;
     padding: 0px;

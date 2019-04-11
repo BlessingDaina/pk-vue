@@ -54,7 +54,9 @@ export default {
             token: _this.userToken,
             userId: _this.userId,
             userName: response.data.data.userName,
-            roleId: response.data.data.roleId
+            roleId: response.data.data.roleId,
+            isAdmin: response.data.data.isAdmin,
+            parkingLotId: response.data.data.parkingLotId
           })
           _this.$router.push({name: 'index'})
         } else if (response.data.status === 500) {
