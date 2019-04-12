@@ -34,8 +34,8 @@
           </div>
         </el-card>
         <div class="button-group">
-          <el-button type="primary" size="small">开启通道</el-button>
-          <el-button type="primary" size="small">关闭通道</el-button>
+          <el-button type="primary" size="small" @click="openPass">开启通道</el-button>
+          <el-button type="primary" size="small" @click="closeChannel">关闭通道</el-button>
         </div>
       </div>
       <div class="export" v-show="currentDriveway.drivewayType === '1'">
@@ -73,7 +73,7 @@
             <div class="free-type">
               <h2>免费放行理由</h2>
               <div class="free-put-list">
-                <el-radio-group v-model="selectFreePutType">
+                <el-radio-group v-model="selectedFreePutType">
                   <el-radio v-for="item in freePutTypeList" :key="item.categoryId" :label="item.categoryName"
                             border></el-radio>
                 </el-radio-group>
@@ -81,12 +81,12 @@
             </div>
           </el-card>
           <div class="option-buttong">
-            <el-button type="success" size="small">免费放行</el-button>
+            <el-button type="success" size="small" @click="freePass">免费放行</el-button>
             <!--<div class="line"></div>-->
-            <el-button type="danger" size="small">收费放行</el-button>
+            <el-button type="danger" size="small" @click="rechargePass">收费放行</el-button>
             <br>
-            <el-button type="primary" size="small">开启通道</el-button>
-            <el-button type="primary" size="small">关闭通道</el-button>
+            <el-button type="primary" size="small" @click="openPass">开启通道</el-button>
+            <el-button type="primary" size="small" @click="closeChannel">关闭通道</el-button>
           </div>
         </div>
       </div>
@@ -108,7 +108,6 @@ export default {
       currentSentryBox: {},
       currentSentryBoxId: '',
       freePutTypeList: [],
-      selectFreePutType: '',
       user: {},
       parkingLotId: '',
       selectedFreePutType: '',
@@ -161,14 +160,15 @@ export default {
       this.$axios.post('/api/sentry/findUserByUserId', {}).then(response => {
         this.userInfo = response.data.data
         this.getParkLotInfo()
+        this.createWebSocket(this.wsUrl)
       })
     },
     // 获取当前账号对应停车场
     getParkLotInfo () {
-      this.$axios.post('/api/sentry/getParkingLotByUnitId', {
-        unitId: this.userInfo.unitId
+      this.$axios.post('/api/pklot/getParkingLotInfo', {
+        parkingLotId: sessionStorage.getItem('parkingLotId')
       }).then(response => {
-        this.parkingLotInfo = response.data.data[0]
+        this.parkingLotInfo = response.data.data
         this.getSentryAndDriveway()
         this.getFreePutType()
       })
@@ -183,6 +183,7 @@ export default {
         this.currentSentryBoxId = this.currentSentryBox.sentryBoxId
         this.drivewayList = this.currentSentryBox.driveways
         this.currentDriveway = this.drivewayList[0]
+        this.currentDriveway.drivewayType = String(this.currentDriveway.drivewayType)
         this.currentDrivewayId = this.currentDriveway.drivewayId
       })
     },
