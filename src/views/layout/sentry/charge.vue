@@ -505,7 +505,8 @@ export default {
         }
         .entrance-img {
           margin: 0 auto;
-
+          width: 526px;
+          height: 344px;
           background: url("../../images/detail.png");
         }
         .charge-item {
