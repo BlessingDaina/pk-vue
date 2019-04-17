@@ -29,45 +29,72 @@
     </el-tabs>
     <div class="sentry-option">
       <div class="entrance" v-show="currentDriveway.drivewayType === '0'">
-        <el-card shadow="hover">
-          <div class="entrance-img">
-          </div>
-        </el-card>
+        <el-row :gutter="20">
+          <el-col :span="16">
+            <el-card shadow="hover">
+              <div class="entrance-img">
+                <img :src="'http://image.if-yun.com/'+entrancePhoto" v-if="entrancePhoto"/>
+              </div>
+            </el-card>
+          </el-col>
+          <el-col :span="8">
+            <div class="charge-item">
+              <ul>
+                <li>
+                  <el-button type="primary" size="small">{{parkingType}}</el-button>
+                  <span class="info">{{entranceCarInfo.carLicense}}</span>
+                </li>
+                <li>
+                  <el-button type="success" size="small">时</el-button>
+                  <span class="info">{{entranceCarInfo.entranceTime}}</span>
+                </li>
+              </ul>
+              <div class="dynamic-message"><span style="color: red">{{dynamicMessage}}</span></div>
+            </div>
+          </el-col>
+        </el-row>
         <div class="button-group">
           <el-button type="primary" size="small" @click="openPass">开启通道</el-button>
           <el-button type="primary" size="small" @click="closeChannel">关闭通道</el-button>
         </div>
       </div>
       <div class="export" v-show="currentDriveway.drivewayType === '1'">
-        <div class="upper">
-          <el-card shadow="hover">
-            <div class="entrance-img">
+        <el-row :gutter="20">
+          <el-col :span="9">
+            <el-card shadow="hover">
+              <div class="entrance-img">
+                <img :src="'http://image.if-yun.com/'+exportPhotoIn" v-if="exportPhotoIn"/>
+              </div>
+            </el-card>
+          </el-col>
+          <el-col :span="9">
+            <el-card shadow="hover">
+              <div class="entrance-img">
+                <img :src="'http://image.if-yun.com/'+exportPhotoOut" v-if="exportPhotoOut"/>
+              </div>
+            </el-card>
+          </el-col>
+          <el-col :span="6">
+            <div class="charge-item">
+              <ul>
+                <li>
+                  <el-button type="primary" size="small">{{parkingType}}</el-button>
+                  <span class="info">{{exitCarInfo.carLicense}}</span>
+                </li>
+                <li>
+                  <el-button type="success" size="small">时</el-button>
+                  <span class="info">{{exitCarInfo.parkingTime}}</span>
+                </li>
+                <li>
+                  <el-button type="info" size="small">费</el-button>
+                  <span class="info">{{exitCarInfo.amountTotal? exitCarInfo.amountTotal+'元':'0.0'}}</span>
+                </li>
+              </ul>
+              <div class="remark">{{exitCarInfo.remark}}</div>
+              <div class="dynamic-message"><span style="color: red">{{dynamicMessage}}</span></div>
             </div>
-          </el-card>
-          <el-card shadow="hover">
-            <div class="entrance-img">
-            </div>
-          </el-card>
-          <div class="charge-item">
-            <ul>
-              <li>
-                <el-button type="primary" size="small">临</el-button>
-              </li>
-              <li>
-                <el-button type="success" size="small">时</el-button>
-              </li>
-              <li>
-                <el-button type="info" size="small">费</el-button>
-              </li>
-              <li>
-                <el-button type="warning" size="small">抵</el-button>
-              </li>
-              <li>
-                <el-button type="danger" size="small">已</el-button>
-              </li>
-            </ul>
-          </div>
-        </div>
+          </el-col>
+        </el-row>
         <div class="lower">
           <el-card shadow="hover">
             <div class="free-type">
@@ -423,7 +450,7 @@ export default {
         width: 100%;
         .el-card {
           width: 600px;
-          margin: 0 auto;
+          float: right;
         }
         .entrance-img {
           margin: 0 auto;
@@ -439,48 +466,73 @@ export default {
             font-size: 16px;
           }
         }
+        .charge-item {
+          display: inline-block;
+          width: 430px;
+          height: 385px;
+          ul {
+            padding: 0;
+            margin: 20px 0;
+            list-style: none;
+          }
+          li {
+            margin: 0;
+            list-style: none;
+            border-bottom: 1px dashed #cccccc;
+            padding: 6px 8px;
+            .info {
+              height: 35px;
+              text-align: right;
+              line-height: 35px;
+              font-size: 24px;
+              color: #777;
+              padding-left: 20px;
+            }
+          }
+          .dynamic-message {
+            text-align: center;
+          }
+        }
       }
       .export {
         width: 100%;
-        .upper {
-          .el-card {
-            width: 600px;
-            display: inline-block;
-            margin-right: 10px;
+        height: 54%;
+        .el-card {
+          width: 100%;
+          display: inline-block;
+          height: 100%;
+          min-height: 366px;
+        }
+        .entrance-img {
+          margin: 0 auto;
+
+          background: url("../../images/detail.png");
+        }
+        .charge-item {
+          width: 100%;
+          display: inline-block;
+          height: 385px;
+          ul {
+            padding: 0;
+            margin: 20px 0;
+            list-style: none;
           }
-          .entrance-img {
-            margin: 0 auto;
-            width: 526px;
-            height: 344px;
-            background: url("../../images/detail.png");
+          li {
+            margin: 0;
+            list-style: none;
+            border-bottom: 1px dashed #cccccc;
+            padding: 6px 8px;
           }
-          .charge-item {
-            display: inline-block;
-            width: 430px;
-            height: 385px;
-            float: right;
-            ul {
-              padding: 0;
-              margin: 20px 0;
-              list-style: none;
-            }
-            li {
-              margin: 0;
-              list-style: none;
-              border-bottom: 1px dashed #cccccc;
-              padding: 6px 8px;
-            }
-            /deep/ {
-              .el-button--small {
-                padding: 9px 9px;
-                font-size: 14px;
-              }
+          /deep/ {
+            .el-button--small {
+              padding: 9px 9px;
+              font-size: 14px;
             }
           }
         }
         .lower {
           .el-card {
-            width: 1215px;
+            width: calc(100% - 465px);
             display: inline-block;
             margin-right: 10px;
           }
