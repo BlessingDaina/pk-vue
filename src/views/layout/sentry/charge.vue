@@ -429,7 +429,7 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="scss" type="text/scss">
   .sentry-content {
     margin: 10px;
     .header {
@@ -505,7 +505,6 @@ export default {
         }
         .entrance-img {
           margin: 0 auto;
-
           background: url("../../images/detail.png");
         }
         .charge-item {

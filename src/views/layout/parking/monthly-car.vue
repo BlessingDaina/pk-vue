@@ -578,7 +578,7 @@
                    label-width="450px"
                    label-position="left">
             <el-form-item label="缴费金额" prop="amountReceivable">
-              <el-input v-model="renewalInfo.amountReceivable" placeholder="请输入金额"
+              <el-input v-model="renewalInfo.amountCollected" placeholder="请输入金额"
                         autocomplete="off" ref="amountReceivable"></el-input>
               元
               <div class="explain">输入缴费金额</div>
@@ -910,7 +910,7 @@ export default {
         expdateType: '0',
         expdateStart: '',
         amountReceivable: '',
-        monthlyAmount: '',
+        amountCollected: '',
         expdateEnd: ''
       },
       nearDateList: [],
@@ -1333,8 +1333,8 @@ export default {
         monthlyType: info.monthlyType,
         expdateType: '0',
         expdateStart: '',
-        amountReceivable: '',
-        monthlyAmount: info.monthlyAmount,
+        amountReceivable: info.monthlyAmount,
+        amountCollected: '',
         expdateEnd: '',
         monthlyId: info.monthlyId,
         parkingLotId: info.parkingLotId
