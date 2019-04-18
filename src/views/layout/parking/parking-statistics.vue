@@ -4,7 +4,7 @@
 * @description:
 */
 <template>
-  <div>
+  <div v-show="parkingLotId">
     <parkList v-on:getSelectedParkLotId="getParkLotIdFromList"/>
     <div class="container" :class="{'covered':showTag}">
       <div class="temp-header">
@@ -111,6 +111,8 @@ export default {
   name: 'parking-statistics',
   data () {
     return {
+      parkingLotId: '',
+      searchInfo: '',
       isAdmin: sessionStorage.getItem('isAdmin'),
       showTag: false,
       tableHeight: this.tableHeights(),
@@ -210,7 +212,7 @@ export default {
         startDate: this.date[0],
         endDate: this.date[1],
         freeType: '',
-        incomeName: ''
+        incomeName: this.searchInfo
       }).then(response => {
         this.tableData = response.data.data.recordItems
         this.totalTemp = response.data.data.count

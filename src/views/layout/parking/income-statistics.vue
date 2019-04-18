@@ -4,7 +4,7 @@
 * @description:
 */
 <template>
-  <div>
+  <div v-show="parkingLotId">
     <parkList v-on:getSelectedParkLotId="getParkLotIdFromList"/>
     <div class="container" :class="{'covered':showTag}">
       <div class="income-header">
@@ -70,6 +70,7 @@ export default {
   name: 'income-statistics',
   data () {
     return {
+      parkingLotId: '',
       isAdmin: sessionStorage.getItem('isAdmin'),
       showTag: false,
       pickerOptions: { // 时间限制

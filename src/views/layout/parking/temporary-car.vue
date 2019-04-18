@@ -4,7 +4,7 @@
 * @description:
 */
 <template>
-  <div>
+  <div v-show="parkingLotId">
     <parkList v-on:getSelectedParkLotId="getParkLotIdFromList"/>
     <div class="container" :class="{'covered':showTag}">
       <div class="temp-header">
@@ -19,12 +19,13 @@
           <el-button type="primary" size="small" @click="openTempModel">添加
           </el-button>
           <!--<inputExcle @getResult="getMyExcelData"/>-->
-          <!--<el-button type="primary" size="small" @click="exportOn" v-if="$store.state.layout.device!='mobile'">导出-->
-          <!--</el-button>-->
-          <!--<el-button type="primary" size="small"-->
-                     <!--v-if="$store.state.layout.device!='mobile'" @click="downloadTemplate">-->
-            <!--下载模板-->
-          <!--</el-button>-->
+          <el-button type="primary" size="small">导入
+          </el-button>
+          <el-button type="primary" size="small">导出
+          </el-button>
+          <el-button type="primary" size="small" @click="downloadTemplate">
+            下载模板
+          </el-button>
         </section>
       </div>
       <el-tabs v-model="tempType" @tab-click="handleClick">
@@ -375,6 +376,10 @@ export default {
         this.$message.success('删除成功')
         this.getTempCarList()
       })
+    },
+    // 下载模板
+    downloadTemplate () {
+      window.open('/api/pklot/excelParkMonthlyMouldDownload/4')
     }
   }
 }

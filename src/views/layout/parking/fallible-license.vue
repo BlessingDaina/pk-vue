@@ -4,7 +4,7 @@
 * @description:
 */
 <template>
-  <div>
+  <div v-show="parkingLotId">
     <parkList v-on:getSelectedParkLotId="getParkLotIdFromList"/>
     <div class="container" :class="{'covered':showTag}">
       <div class="fallible-header">

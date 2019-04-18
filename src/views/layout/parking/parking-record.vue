@@ -4,7 +4,7 @@
 * @description:
 */
 <template>
-  <div>
+  <div v-show="parkingLotId">
     <parkList v-on:getSelectedParkLotId="getParkLotIdFromList"/>
     <div class="container" :class="{'covered':showTag}">
       <div class="record-header">
@@ -149,6 +149,7 @@ export default {
   name: 'parking-record',
   data () {
     return {
+      parkingLotId: '',
       isAdmin: sessionStorage.getItem('isAdmin'),
       showTag: false,
       tableHeight: this.tableHeights(),
@@ -248,6 +249,7 @@ export default {
   methods: {
     // 从停车场列表组件获取当前选中的停车场id
     getParkLotIdFromList (data) {
+      this.parkingLotId = data
       this.searchParam.parkingLotId = data
       this.initData()
       this.getRecordList()

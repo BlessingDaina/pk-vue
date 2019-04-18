@@ -4,7 +4,7 @@
 * @description:
 */
 <template>
-  <div>
+  <div v-show="parkingLotId">
     <parkList v-on:getSelectedParkLotId="getParkLotIdFromList"/>
     <div class="container" :class="{'covered':showTag}">
       <div class="monthly-income-header">
@@ -125,6 +125,7 @@ export default {
   name: 'monthly-statistics',
   data () {
     return {
+      parkingLotId: '',
       isAdmin: sessionStorage.getItem('isAdmin'),
       showTag: false,
       tableHeight: this.tableHeights(),

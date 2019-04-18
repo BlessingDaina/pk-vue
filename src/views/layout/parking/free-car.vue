@@ -4,7 +4,7 @@
 * @description:
 */
 <template>
-  <div>
+  <div v-show="parkingLotId">
     <parkList v-on:getSelectedParkLotId="getParkLotIdFromList"/>
     <div class="container" :class="{'covered':showTag}">
       <div class="free-header">
@@ -18,12 +18,13 @@
           <el-button type="primary" size="small" @click="getFreeList">查询</el-button>
           <el-button type="primary" size="small" @click="openFreeModel">添加
           </el-button>
-          <!--<inputExcle @getResult="getMyExcelData"/>-->
-          <!--<el-button type="primary" size="small" @click="exportOn">导出-->
-          <!--</el-button>-->
-          <!--<el-button type="primary" size="small" @click="downloadTemplate">-->
-            <!--下载模板-->
-          <!--</el-button>-->
+          <el-button type="primary" size="small" @click="exportOn">导入
+          </el-button>
+          <el-button type="primary" size="small" @click="exportOn">导出
+          </el-button>
+          <el-button type="primary" size="small" @click="downloadTemplate">
+            下载模板
+          </el-button>
         </section>
       </div>
       <el-tabs v-model="status" @tab-click="handleClick">
@@ -211,7 +212,9 @@
 
 <script>
 import {isVehicleNumber} from '@/utils/parking/verify'
+import inputExcel from '../components/inputExcel'
 import parkList from '../components/parkingList'
+import {exportExcel} from '@/api/export'
 export default {
   name: 'free-car',
   data () {
@@ -273,7 +276,8 @@ export default {
     })
   },
   components: {
-    parkList
+    parkList,
+    inputExcel
   },
   methods: {
     // 从停车场列表组件获取当前选中的停车场id
@@ -427,6 +431,20 @@ export default {
       if (type === '0') {
         this.freeCarForm.freeTime = []
       }
+    },
+    // 下载模板
+    downloadTemplate () {
+      window.open('/api/pklot/excelParkMonthlyMouldDownload/3')
+    },
+    // 导出
+    exportOn () {
+      let data = {
+        specialType: 2,
+        carMessage: this.searchInfo,
+        parkingLotId: this.parkingLotId,
+        status: this.status
+      }
+      exportExcel('/api/pklot/exportSpecialCar', data, '免费车辆统计')
     }
   }
 }

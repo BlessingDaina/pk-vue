@@ -4,7 +4,7 @@
 * @description:
 */
 <template>
-  <div>
+  <div v-show="parkingLotId">
     <parkList v-on:getSelectedParkLotId="getParkLotIdFromList"/>
     <div class="container" :class="{'covered':showTag}">
       <div class="monthly-header">
@@ -48,7 +48,6 @@
           <el-table-column
             prop="ownerName"
             label="车主"
-            fixed
             min-width="100"
             align="center"
             :show-overflow-tooltip="true"

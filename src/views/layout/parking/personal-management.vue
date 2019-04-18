@@ -272,7 +272,9 @@ export default {
   methods: {
     // 获取用户角色
     getAllRole () {
-      this.$axios.post('/api/sys/getAllRole').then(response => {
+      this.$axios.post('/api/sys/getAllRole', {
+        roleId: sessionStorage.getItem('roleId')
+      }).then(response => {
         this.addRoleList = response.data.data
         this.roleTypeList = this.all.concat(response.data.data, this.delete)
       })
@@ -282,7 +284,9 @@ export default {
       this.$axios.post('/api/pklot/getUserList', {
         userInfo: this.userInfo,
         roleId: this.roleId,
-        delFlag: this.delFlag
+        delFlag: this.delFlag,
+        parkingLotId: sessionStorage.getItem('parkingLotId'),
+        userRoleId: sessionStorage.getItem('roleId')
       }).then(response => {
         this.userList = response.data.data
       })
