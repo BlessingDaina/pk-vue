@@ -326,50 +326,50 @@
                   </el-pagination>
                 </div>
               </div>
-              <div class="presence-car-list">
-                <p class="title">在场车辆列表</p>
-                <div class="car-header">
-                  <div class="car-search">
-                    <el-input size="mini" v-model="presenceCarKeyWord" placeholder="请输入车牌号"
-                              @keyup.enter.native="searchMonthlyPresenceCar"></el-input>
-                  </div>
-                  <div class="car-button-group">
-                    <el-button size="mini" type="primary" @click="searchMonthlyPresenceCar">查询</el-button>
-                  </div>
-                </div>
-                <div class="car-list-table">
-                  <el-table
-                    :data="presenceCarList"
-                    border
-                    height="164"
-                  >
-                    <el-table-column
-                      prop="carLicense"
-                      label="车牌号"
-                      fixed
-                      min-width="150"
-                      align="center"
-                    >
-                    </el-table-column>
-                    <el-table-column
-                      prop="entranceTime"
-                      label="进场时间"
-                      min-width="200"
-                      align="center"
-                    >
-                    </el-table-column>
-                    <el-table-column
-                      label="操作"
-                      min-width="250"
-                      align="center"
-                    >
-                      <template slot-scope="scope">
-                        <el-button disabled type="primary" size="mini" @click="clearModel(scope.row)">清除在场状态</el-button>
-                      </template>
-                    </el-table-column>
-                  </el-table>
-                </div>
-              </div>
+              <!--<div class="presence-car-list">-->
+                <!--<p class="title">在场车辆列表</p>-->
+                <!--<div class="car-header">-->
+                  <!--<div class="car-search">-->
+                    <!--<el-input size="mini" v-model="presenceCarKeyWord" placeholder="请输入车牌号"-->
+                              <!--@keyup.enter.native="searchMonthlyPresenceCar"></el-input>-->
+                  <!--</div>-->
+                  <!--<div class="car-button-group">-->
+                    <!--<el-button size="mini" type="primary" @click="searchMonthlyPresenceCar">查询</el-button>-->
+                  <!--</div>-->
+                <!--</div>-->
+                <!--<div class="car-list-table">-->
+                  <!--<el-table-->
+                    <!--:data="presenceCarList"-->
+                    <!--border-->
+                    <!--height="164"-->
+                  <!--&gt;-->
+                    <!--<el-table-column-->
+                      <!--prop="carLicense"-->
+                      <!--label="车牌号"-->
+                      <!--fixed-->
+                      <!--min-width="150"-->
+                      <!--align="center"-->
+                    <!--&gt;-->
+                    <!--</el-table-column>-->
+                    <!--<el-table-column-->
+                      <!--prop="entranceTime"-->
+                      <!--label="进场时间"-->
+                      <!--min-width="200"-->
+                      <!--align="center"-->
+                    <!--&gt;-->
+                    <!--</el-table-column>-->
+                    <!--<el-table-column-->
+                      <!--label="操作"-->
+                      <!--min-width="250"-->
+                      <!--align="center"-->
+                    <!--&gt;-->
+                      <!--<template slot-scope="scope">-->
+                        <!--<el-button disabled type="primary" size="mini" @click="clearModel(scope.row)">清除在场状态</el-button>-->
+                      <!--</template>-->
+                    <!--</el-table-column>-->
+                  <!--</el-table>-->
+                <!--</div>-->
+              <!--</div>-->
             </div>
           </el-tab-pane>
         </el-tabs>

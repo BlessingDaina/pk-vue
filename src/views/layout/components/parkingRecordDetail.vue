@@ -18,7 +18,7 @@
       <div class="detail-cont">
         <el-scrollbar style="height: 100%">
           <el-card :body-style="{ padding: '0px' }" shadow="never">
-            <img v-if="detail.entrancePhoto" :src="'http://image.if-yun.com/' + detail.entrancePhoto">
+            <img v-if="detail.entrancePhoto" :src="require('../../images/'+detail.entrancePhoto)">
             <img v-else src="../../images/defaultimg.png">
             <div class="detail-des">
               <span>入场通道：{{ detail.entranceName }}</span>
@@ -28,7 +28,7 @@
             </div>
           </el-card>
           <el-card :body-style="{ padding: '0px' }" shadow="never">
-            <img v-if="detail.exitPhoto" :src="'http://image.if-yun.com/' + detail.exitPhoto" class="image">
+            <img v-if="detail.exitPhoto" :src="require('../../images/'+ detail.exitPhoto)" class="image">
             <img v-else src="../../images/defaultimg.png">
             <div class="detail-des">
               <span>出场通道：{{ detail.exitName }}</span>

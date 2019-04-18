@@ -32,7 +32,6 @@
                   </el-form>
                 </div>
               </el-col>
-              <el-col :span="2"><img class="parkImg" src="../../images/warn.svg"></el-col>
             </el-row>
           </el-card>
         </div>

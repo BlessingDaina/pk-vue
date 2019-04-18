@@ -44,18 +44,18 @@
             </el-button>
           </div>
         </el-card>
-        <el-card shadow="hover" class="type-card">
-          <div slot="header">
-            <strong class="type-title">临停车辆类型</strong><br>
-            <span class="explain">设置临停车辆类型</span>
-          </div>
-          <div class="type-content">
-            <el-button size="small" @click="deleteModel(item, 4)" v-for="item in tempTypeList" :key="item.categoryId" type="primary"  plain>{{item.categoryName}}<i class="el-icon-circle-close-outline el-icon--right"></i></el-button>
-            <el-button size="small" class="add" type="primary" @click="addTypeModel(4)"
-                       icon="el-icon-circle-plus-outline" :disabled="tempTypeList.length === 10">添加
-            </el-button>
-          </div>
-        </el-card>
+        <!--<el-card shadow="hover" class="type-card">-->
+          <!--<div slot="header">-->
+            <!--<strong class="type-title">临停车辆类型</strong><br>-->
+            <!--<span class="explain">设置临停车辆类型</span>-->
+          <!--</div>-->
+          <!--<div class="type-content">-->
+            <!--<el-button size="small" @click="deleteModel(item, 4)" v-for="item in tempTypeList" :key="item.categoryId" type="primary"  plain>{{item.categoryName}}<i class="el-icon-circle-close-outline el-icon&#45;&#45;right"></i></el-button>-->
+            <!--<el-button size="small" class="add" type="primary" @click="addTypeModel(4)"-->
+                       <!--icon="el-icon-circle-plus-outline" :disabled="tempTypeList.length === 10">添加-->
+            <!--</el-button>-->
+          <!--</div>-->
+        <!--</el-card>-->
       </el-scrollbar>
     </div>
     <el-dialog

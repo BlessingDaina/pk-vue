@@ -40,7 +40,7 @@
         <div class="navBarRight">
           <el-menu mode="horizontal" active-text-color="#232650"  text-color="#232650" router>
             <el-submenu index="2">
-              <template slot="title"><img class="userHead" src="../images/head.png"> {{userName}}
+              <template slot="title"><img class="userHead" src="../images/head.jpg"> {{userName}}
                 <i class="down el-icon-arrow-down"></i>
               </template>
               <el-menu-item @click="logout" index="/login">安全退出</el-menu-item>

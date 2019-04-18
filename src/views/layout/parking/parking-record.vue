@@ -311,10 +311,15 @@ export default {
     },
     // 转换时长
     countDuration (duration) {
+      console.log(duration)
       let day = duration / (60 * 60 * 24)
+      console.log(day)
       let hour = duration / (60 * 60) - day * 24
+      console.log(hour)
       let min = duration / 60 - hour * 60 - day * 24 * 60
+      console.log(min)
       let sec = duration - min * 60 - hour * 60 * 60 - day * 60 * 60 * 24
+      console.log(sec)
       let totalTime = (day === 0 ? '' : (day + '天')) + (hour === 0 ? '' : (hour + '小时')) + (min === 0 ? '' : (min + '分')) + sec + '秒'
       return totalTime
     },

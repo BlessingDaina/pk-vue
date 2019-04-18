@@ -317,6 +317,13 @@ export default {
         if (valid) {
           this.$refs[userForm].clearValidate()
           this.addVisible = false
+          if (this.addUserInfo.roleId === '01') {
+            this.addUserInfo.isAdmin = 1
+            this.addUserInfo.parkingLotId = ''
+          } else {
+            this.addUserInfo.isAdmin = 0
+            this.addUserInfo.parkingLotId = this.parkingLotId
+          }
           this.$axios.post('/api/pklot/addUser', this.addUserInfo).then(response => {
             if (response.data.data === 1) {
               this.$message.success('保存成功')
@@ -366,6 +373,11 @@ export default {
         if (valid) {
           this.$refs[editUserForm].clearValidate()
           this.editVisible = false
+          if (this.editUserInfo.roleId === '01') {
+            this.editUserInfo.isAdmin = 1
+          } else {
+            this.editUserInfo.isAdmin = 0
+          }
           this.$axios.post('/api/pklot/updateUser', this.editUserInfo).then(response => {
             if (response.data.data === 1) {
               this.$message.success('修改成功')
