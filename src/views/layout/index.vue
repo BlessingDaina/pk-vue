@@ -10,7 +10,7 @@
         active-text-color="#ffd04b"
         router
       >
-        <el-submenu v-for="menu in menus" :key="menu.menuId" :index="menu.icon">
+        <el-submenu v-for="menu in menus" :key="menu.menuId" :index="menu.icon" ref="menuTop">
           <template slot="title">
             <i class="iconfont" :class="menu.icon"></i>
             {{menu.menuName}}
@@ -107,8 +107,8 @@ export default {
         siteId: siteId
       }).then(response => {
         this.menus = response.data.data
-        console.log(this.menus)
-        // this.$router.push({path: this.menus[0].menus[0].href})
+        this.$router.push({name: 'index'})
+        this.$router.push({path: this.menus[0].menus[0].href})
       }).catch(error => {
         console.log(error)
       })

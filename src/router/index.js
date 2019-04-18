@@ -26,6 +26,7 @@ const router = new Router({
     {
       path: '/',
       name: 'index',
+      // redirect: 'parking/park-info',
       component: index,
       meta: {
         requireAuth: true
