@@ -59,62 +59,71 @@
         </div>
       </div>
       <div class="export" v-show="currentDriveway.drivewayType === '1'">
-        <el-row :gutter="20">
-          <el-col :span="9">
-            <el-card shadow="hover">
-              <div class="entrance-img">
-                <img :src="'http://image.if-yun.com/'+exportPhotoIn" v-if="exportPhotoIn"/>
+        <div class="up">
+          <el-row :gutter="20">
+            <el-col :span="9">
+              <el-card shadow="hover">
+                <div class="entrance-img">
+                  <img :src="'http://image.if-yun.com/'+exportPhotoIn" v-if="exportPhotoIn"/>
+                </div>
+              </el-card>
+            </el-col>
+            <el-col :span="9">
+              <el-card shadow="hover">
+                <div class="entrance-img">
+                  <img :src="'http://image.if-yun.com/'+exportPhotoOut" v-if="exportPhotoOut"/>
+                </div>
+              </el-card>
+            </el-col>
+            <el-col :span="6">
+              <div class="charge-item">
+                <ul>
+                  <li>
+                    <el-button type="primary" size="small">{{parkingType}}</el-button>
+                    <span class="info">{{exitCarInfo.carLicense}}</span>
+                  </li>
+                  <li>
+                    <el-button type="success" size="small">时</el-button>
+                    <span class="info">{{exitCarInfo.parkingTime}}</span>
+                  </li>
+                  <li>
+                    <el-button type="info" size="small">费</el-button>
+                    <span class="info">{{exitCarInfo.amountTotal? exitCarInfo.amountTotal+'元':'0.0'}}</span>
+                  </li>
+                </ul>
+                <div class="remark">{{exitCarInfo.remark}}</div>
+                <div class="dynamic-message"><span style="color: red">{{dynamicMessage}}</span></div>
               </div>
-            </el-card>
-          </el-col>
-          <el-col :span="9">
-            <el-card shadow="hover">
-              <div class="entrance-img">
-                <img :src="'http://image.if-yun.com/'+exportPhotoOut" v-if="exportPhotoOut"/>
-              </div>
-            </el-card>
-          </el-col>
-          <el-col :span="6">
-            <div class="charge-item">
-              <ul>
-                <li>
-                  <el-button type="primary" size="small">{{parkingType}}</el-button>
-                  <span class="info">{{exitCarInfo.carLicense}}</span>
-                </li>
-                <li>
-                  <el-button type="success" size="small">时</el-button>
-                  <span class="info">{{exitCarInfo.parkingTime}}</span>
-                </li>
-                <li>
-                  <el-button type="info" size="small">费</el-button>
-                  <span class="info">{{exitCarInfo.amountTotal? exitCarInfo.amountTotal+'元':'0.0'}}</span>
-                </li>
-              </ul>
-              <div class="remark">{{exitCarInfo.remark}}</div>
-              <div class="dynamic-message"><span style="color: red">{{dynamicMessage}}</span></div>
-            </div>
-          </el-col>
-        </el-row>
+            </el-col>
+          </el-row>
+        </div>
         <div class="lower">
-          <el-card shadow="hover">
-            <div class="free-type">
-              <h2>免费放行理由</h2>
-              <div class="free-put-list">
-                <el-radio-group v-model="selectedFreePutType">
-                  <el-radio v-for="item in freePutTypeList" :key="item.categoryId" :label="item.categoryName"
-                            border></el-radio>
-                </el-radio-group>
+          <el-row :gutter="20">
+            <el-col :span="18">
+              <el-card shadow="hover">
+                <div class="free-type">
+                  <h2>免费放行理由</h2>
+                  <div class="free-put-list">
+                    <el-radio-group v-model="selectedFreePutType">
+                      <el-radio v-for="item in freePutTypeList" :key="item.categoryId" :label="item.categoryName"
+                                border></el-radio>
+                    </el-radio-group>
+                  </div>
+                  <el-input class="free-remark" v-model="freeRemark" v-show="selectedFreePutType==='99'"></el-input>
+                </div>
+              </el-card>
+            </el-col>
+            <el-col :span="6">
+              <div class="option-buttong">
+                <el-button type="success" size="small" @click="freePass">免费放行</el-button>
+                <!--<div class="line"></div>-->
+                <el-button type="danger" size="small" @click="rechargePass">收费放行</el-button>
+                <br>
+                <el-button type="primary" size="small" @click="openPass">开启通道</el-button>
+                <el-button type="primary" size="small" @click="closeChannel">关闭通道</el-button>
               </div>
-            </div>
-          </el-card>
-          <div class="option-buttong">
-            <el-button type="success" size="small" @click="freePass">免费放行</el-button>
-            <!--<div class="line"></div>-->
-            <el-button type="danger" size="small" @click="rechargePass">收费放行</el-button>
-            <br>
-            <el-button type="primary" size="small" @click="openPass">开启通道</el-button>
-            <el-button type="primary" size="small" @click="closeChannel">关闭通道</el-button>
-          </div>
+            </el-col>
+          </el-row>
         </div>
       </div>
     </div>
@@ -243,7 +252,11 @@ export default {
         parkingLotId: this.parkingLotInfo.parkingLotId,
         categoryType: 3
       }).then(response => {
-        this.freePutTypeList = response.data.data
+        let other = [{
+          categoryValue: '99',
+          categoryName: '其他'
+        }]
+        this.freePutTypeList = response.data.data.concat(other)
       })
     },
     // --------websocket相关-------
@@ -497,20 +510,24 @@ export default {
       .export {
         width: 100%;
         height: 54%;
-        .el-card {
-          width: 100%;
-          display: inline-block;
-          height: 100%;
-          min-height: 366px;
-        }
-        .entrance-img {
-          margin: 0 auto;
-          background: url("../../images/detail.png");
+        .up {
+          .el-card {
+            width: 100%;
+            display: inline-block;
+            height: 100%;
+            min-height: 300px;
+          }
+          .entrance-img {
+            margin: 0 auto;
+            width: 420px;
+            height: 300px;
+            background: url("../../images/detail.png");
+          }
         }
         .charge-item {
           width: 100%;
           display: inline-block;
-          height: 385px;
+          height: 300px;
           ul {
             padding: 0;
             margin: 20px 0;
@@ -531,9 +548,10 @@ export default {
         }
         .lower {
           .el-card {
-            width: calc(100% - 465px);
             display: inline-block;
             margin-right: 10px;
+            height: 200px;
+            width: 100%;
           }
           .free-type {
             h2 {
@@ -541,16 +559,16 @@ export default {
             }
             .free-put-list {
               margin-top: 20px;
-              height: 150px;
+            }
+            .free-remark {
+              margin-top: 10px;
             }
           }
           .option-buttong {
             position: relative;
             float: right;
-            margin-top: 40px;
-            width: 430px;
             .el-button--small, .el-button--small.is-round {
-              padding: 19px 59px;
+              padding: 10px 39px;
               margin-top: 20px;
               font-size: 16px;
             }
