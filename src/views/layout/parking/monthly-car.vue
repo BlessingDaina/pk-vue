@@ -19,7 +19,7 @@
           <el-button type="primary" size="small" @click="addMonthlyUser">添加
           </el-button>
           <input-excel @getResult="getMonthlyExcelData"/>
-          <el-button type="primary" size="small" @click="exportMonthly">导出</el-button>
+          <!--<el-button type="primary" size="small" @click="exportMonthly">导出</el-button>-->
           <el-button type="primary" size="small" @click="downloadMonthlyUserTemp">
             下载模板
           </el-button>
@@ -104,14 +104,14 @@
             :show-overflow-tooltip="true"
           >
           </el-table-column>
-          <el-table-column
-            prop="expDate"
-            label="到期时间"
-            min-width="120"
-            align="center"
-            :show-overflow-tooltip="true"
-          >
-          </el-table-column>
+          <!--<el-table-column-->
+            <!--prop="expDate"-->
+            <!--label="到期时间"-->
+            <!--min-width="120"-->
+            <!--align="center"-->
+            <!--:show-overflow-tooltip="true"-->
+          <!--&gt;-->
+          <!--</el-table-column>-->
           <el-table-column
             prop="categoryName"
             label="车辆类别"
@@ -577,7 +577,7 @@
                    label-width="450px"
                    label-position="left">
             <el-form-item label="缴费金额" prop="amountReceivable">
-              <el-input v-model="renewalInfo.amountCollected" placeholder="请输入金额"
+              <el-input v-model="renewalInfo.amountCollected" placeholder="请输入金额" type="number"
                         autocomplete="off" ref="amountReceivable"></el-input>
               元
               <div class="explain">输入缴费金额</div>
@@ -1559,6 +1559,7 @@ export default {
           } else {
             _this.importData.push(item)
           }
+          console.log(item)
         })
         console.log(this.errMsgs)
         console.log(this.importData)
@@ -1839,7 +1840,7 @@ export default {
   .monthly-header {
     position: relative;
     .search-input {
-      margin-right: 375px;
+      margin-right: 305px;
     }
     .button-group {
       position: absolute;

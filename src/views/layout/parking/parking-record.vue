@@ -28,8 +28,6 @@
             :picker-options="pickerOptions">
           </el-date-picker>
           <el-button type="primary" size="small" @click="getRecordList">查询</el-button>
-          <el-button type="primary" size="small">导出
-          </el-button>
         </section>
       </div>
       <div class="parking-record-content">
@@ -357,7 +355,7 @@ export default {
   .record-header {
     position: relative;
     .search-input {
-      margin-right: 505px;
+      margin-right: 435px;
     }
     .button-group {
       position: absolute;
